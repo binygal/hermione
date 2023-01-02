@@ -1,0 +1,13 @@
+.button {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    height: 40px;
+    background-color: green;
+    border-radius: 20px;
+    border: 0;
+}
+
+.button:active {
+    background-color: lightgreen;
+}
