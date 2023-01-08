@@ -1,11 +1,14 @@
 import styles from './Header.module.css';
 
 type HeaderProps = {
-    content: string
-}
+  content: string
+};
 
 export default function Header(props: HeaderProps) {
-    return <div className={styles.header}>
-        {props.content}
+  const { content } = props;
+  return (
+    <div className={styles.header}>
+      {content}
     </div>
+  );
 }

@@ -1,3 +1,13 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "class-methods-use-this": "off"
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }
