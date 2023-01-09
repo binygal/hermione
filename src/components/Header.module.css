@@ -1,6 +1,24 @@
 .header {
     width: 100%;
+    display: flex;
+}
+
+.leftIcon {
+    position: fixed;
+    right: 25px;
+    top: 10px;
+}
+
+.rightIcon {
+    position: fixed;
+    left: 25px;
+    top: 10px;
+}
+
+.content {
     font-size: larger;
     padding: 10px;
     text-align: center;
+    flex: 1;
+    justify-self: center;
 }

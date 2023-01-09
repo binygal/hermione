@@ -7,6 +7,8 @@ import ElapsingTime from '../components/ElapsingTime';
 import Message from '../components/Message';
 import useRecordsModel from '../common/useRecordsModel';
 import { getTimeDiff, TimeDiff } from '../common/extensions/date';
+import OpenRecordsListButton from '../records-log/OpenRecordsListButton';
+import useSetCurrentView from '../common/app/useSetCurrentView';
 
 export default function TimeTrackerContainer() {
   const recordsModel = useRecordsModel();
@@ -47,9 +49,14 @@ export default function TimeTrackerContainer() {
     [recordsModel, setIsWorking],
   );
 
+  const setCurrentView = useSetCurrentView();
+
   return (
     <div className={styles.content}>
-      <Header content="Time tracking" />
+      <Header
+        content="Time tracking"
+        leftIcon={<OpenRecordsListButton onClick={() => setCurrentView('logs-container')} />}
+      />
       <div className={styles.containerItem}>
         <CurrentStateDisplay logo={renderData.logo} />
       </div>

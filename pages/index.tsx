@@ -1,8 +1,7 @@
 import Head from 'next/head';
 import { useMemo } from 'react';
+import Presentor from '../src/common/app/Presentor';
 import MainModelContext, { MainModel } from '../src/common/MainModelContext';
-import OpenRecordsListButton from '../src/records-list/OpenRecordsListButton';
-import TimeTrackerContainer from '../src/time-tracker/TimeTrackerContainer';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
@@ -17,8 +16,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainModelContext.Provider value={mainModelContextValue}>
-        <OpenRecordsListButton />
-        <TimeTrackerContainer />
+        <Presentor />
       </MainModelContext.Provider>
     </div>
   );
