@@ -6,6 +6,7 @@
     background-color: green;
     border-radius: 20px;
     border: 0;
+    font-size: larger;
 }
 
 .button:active {

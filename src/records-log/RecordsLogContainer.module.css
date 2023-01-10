@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.entriesContainer {
+    flex: 1;
+    margin-top: 15px;
+}

@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import CurrentStateDisplay from '../components/CurrentStateDisplay';
 import Header from '../components/Header';
-import StartNowButton from '../components/StartNowButton';
+import MainActionButton from '../components/MainActionButton';
 import styles from '../../styles/Home.module.css';
 import ElapsingTime from '../components/ElapsingTime';
 import Message from '../components/Message';
 import useRecordsModel from '../common/useRecordsModel';
 import { getTimeDiff, TimeDiff } from '../common/extensions/date';
-import OpenRecordsListButton from '../records-log/OpenRecordsListButton';
 import useSetCurrentView from '../common/app/useSetCurrentView';
+import SVGButton from '../components/SVGButton';
+import listLogo from '../components/resources/list.svg';
 
 export default function TimeTrackerContainer() {
   const recordsModel = useRecordsModel();
@@ -55,13 +56,13 @@ export default function TimeTrackerContainer() {
     <div className={styles.content}>
       <Header
         content="Time tracking"
-        leftIcon={<OpenRecordsListButton onClick={() => setCurrentView('logs-container')} />}
+        leftIcon={<SVGButton onClick={() => setCurrentView('logs-container')} svg={listLogo} />}
       />
       <div className={styles.containerItem}>
         <CurrentStateDisplay logo={renderData.logo} />
       </div>
       {isWorking ? <ElapsingTime hours={time.hours} minutes={time.minutes} /> : <Message message="Start to see elapsing time" />}
-      <StartNowButton onClick={startNowCallback} title={renderData.title} />
+      <MainActionButton onClick={startNowCallback} title={renderData.title} />
     </div>
   );
 }

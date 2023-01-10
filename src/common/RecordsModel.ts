@@ -6,6 +6,8 @@ export interface IRecordsModel {
   createRecord(record: Record): Promise<void>;
   currentOnGoingRecord: Promise<Record | undefined>
   createOrSealRecord(): Promise<void>
+  getCurrentMonthRecords(): Promise<Record[]>
+  getAllRecords(): Promise<Record[]>
   isCurrentlyRunning: Promise<boolean>
 }
 
@@ -14,6 +16,16 @@ export default class RecordsModel implements IRecordsModel {
 
   constructor(recordsRepository: IRecordsRepository) {
     this.recordsRepository = recordsRepository;
+  }
+
+  getAllRecords(): Promise<Record[]> {
+    return this.recordsRepository.getAllRecords();
+  }
+
+  getCurrentMonthRecords(): Promise<Record[]> {
+    const today = new Date();
+    const firstOfTheMonth = new Date(today.getFullYear(), today.getMonth(), 1).getTime();
+    return this.recordsRepository.getAllRecords(((r) => !r.endTime || r.endTime > firstOfTheMonth));
   }
 
   get isCurrentlyRunning(): Promise<boolean> {

@@ -4,6 +4,7 @@ import { IDBConnector } from './LocalDBConnector';
 export interface IRecordsRepository {
   createRecord(record: Record): Promise<void>
   getSingleRecord(selector: (record: Record) => boolean): Promise<Record | undefined>
+  getAllRecords(filter?: (record: Record) => boolean): Promise<Record[]>
   updateRecord(record: Record): Promise<void>
 }
 
@@ -14,6 +15,10 @@ export default class RecordsRepository implements IRecordsRepository {
 
   constructor(dbConnector: IDBConnector<DBStructure>) {
     this.dbConnector = dbConnector;
+  }
+
+  getAllRecords(filter?: (record: Record) => boolean): Promise<Record[]> {
+    return this.dbConnector.getMany(RECORDS_TABLE, filter ?? (() => true));
   }
 
   getSingleRecord(selector: (record: Record) => boolean): Promise<Record | undefined> {
