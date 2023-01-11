@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.inputContainer * {
+    margin: 10px;
+}

@@ -9,3 +9,12 @@ export function getTimeDiff(lh: number, rh: number): TimeDiff {
   const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
   return { hours: diffHrs, minutes: diffMins };
 }
+
+export function convertDateToInputString(date: Date): string {
+  return date.toISOString().substring(0, date.toISOString().length - 1);
+}
+
+export function convertInputStringToTimestamp(inputString: string): number {
+  const date = new Date(inputString);
+  return date.getTime();
+}

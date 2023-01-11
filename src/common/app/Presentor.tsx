@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import RecordEditorContainer from '../../record-editor/RecordEditorContainer';
 import RecordsLogContainer from '../../records-log/RecordsLogContainer';
 import TimeTrackerContainer from '../../time-tracker/TimeTrackerContainer';
 import PresentorContext, { ViewNames } from './PresentorContext';
@@ -9,6 +10,9 @@ function getViewFromName(viewName: ViewNames): React.FunctionComponent | undefin
   }
   if (viewName === 'logs-container') {
     return RecordsLogContainer;
+  }
+  if (viewName === 'record-editor') {
+    return RecordEditorContainer;
   }
   return undefined;
 }
