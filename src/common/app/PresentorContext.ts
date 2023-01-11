@@ -3,5 +3,5 @@ import React from 'react';
 export type ViewNames = 'main' | 'logs-container' | 'record-editor';
 
 export default React.createContext(
-  { setCurrentView: (_viewName: ViewNames) => {} },
+  { setCurrentView: (_viewName: ViewNames, _props?: Record<string, string>) => {} },
 );

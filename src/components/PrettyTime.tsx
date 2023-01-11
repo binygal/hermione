@@ -1,3 +1,5 @@
+import styles from './PrettyTime.module.css';
+
 type PrettyTimeProps = {
   time: number
   mode: 'time' | 'date' | 'date-and-time'
@@ -24,5 +26,23 @@ export default function PrettyTime(props: PrettyTimeProps) {
     </div>
   );
 
-  return mode === 'date' ? dateElement : timeElement;
+  switch (mode) {
+    case 'date': {
+      return dateElement;
+    }
+    case 'time': {
+      return timeElement;
+    }
+    case 'date-and-time': {
+      return (
+        <div className={styles.dateTimeContainer}>
+          {dateElement}
+          {timeElement}
+        </div>
+      );
+    }
+    default: {
+      return null;
+    }
+  }
 }

@@ -18,3 +18,11 @@ export function convertInputStringToTimestamp(inputString: string): number {
   const date = new Date(inputString);
   return date.getTime();
 }
+
+export function isSameDay(lh: number, rh: number): boolean {
+  const firstDate = new Date(lh);
+  const secondDate = new Date(rh);
+  return firstDate.getDay() === secondDate.getDay()
+  && firstDate.getMonth() === secondDate.getMonth()
+  && firstDate.getFullYear() === secondDate.getFullYear();
+}

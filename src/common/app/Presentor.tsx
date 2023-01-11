@@ -19,8 +19,12 @@ function getViewFromName(viewName: ViewNames): React.FunctionComponent | undefin
 
 export default function Presentor() {
   const [currentView, setCurrentView] = useState<ViewNames>('main');
+  const [currentProps, setCurrentProps] = useState<Record<string, string>>({});
   const presentorContextValue = useMemo(() => ({
-    setCurrentView: (viewName: ViewNames) => { setCurrentView(viewName); },
+    setCurrentView: (viewName: ViewNames, props: Record<string, string> = {}) => {
+      setCurrentView(viewName);
+      setCurrentProps(props);
+    },
   }
   ), [setCurrentView]);
   const viewToRender = getViewFromName(currentView);
@@ -30,7 +34,7 @@ export default function Presentor() {
 
   return (
     <PresentorContext.Provider value={presentorContextValue}>
-      {React.createElement(viewToRender) }
+      {React.createElement(viewToRender, currentProps) }
     </PresentorContext.Provider>
   );
 }
