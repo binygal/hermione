@@ -10,11 +10,13 @@ import { getTimeDiff, TimeDiff } from '../common/extensions/date';
 import useSetCurrentView from '../common/app/useSetCurrentView';
 import SVGButton from '../components/SVGButton';
 import listLogo from '../components/resources/list.svg';
+import MonthlySummary from './MonthlySummary';
 
 export default function TimeTrackerContainer() {
   const recordsModel = useRecordsModel();
   const [isWorking, setIsWorking] = useState(false);
   const [time, setTime] = useState<TimeDiff>({ hours: 0, minutes: 0 });
+  const [monthlySummary, setMonthlySummary] = useState({ hours: 0, minutes: 0 });
   const renderData = {
     logo: isWorking ? 'working' : 'coffee' as 'working' | 'coffee',
     title: isWorking ? 'stop' : 'start',
@@ -27,6 +29,12 @@ export default function TimeTrackerContainer() {
       if (currentRecord) {
         setTime(getTimeDiff(currentRecord?.startTime, Date.now()));
       }
+      const today = new Date();
+      const monthlyData = await recordsModel.getTotalTimeBetweenDates(
+        (new Date(today.getFullYear(), today.getMonth())).getTime(),
+        (new Date(today.getFullYear(), today.getMonth() + 1)).getTime(),
+      );
+      setMonthlySummary(monthlyData);
     };
 
     const intervalID = setInterval(async () => {
@@ -61,6 +69,7 @@ export default function TimeTrackerContainer() {
       <div className={styles.containerItem}>
         <CurrentStateDisplay logo={renderData.logo} />
       </div>
+      <MonthlySummary monthlyRecord={monthlySummary} />
       {isWorking ? <ElapsingTime hours={time.hours} minutes={time.minutes} /> : <Message message="Start to see elapsing time" />}
       <MainActionButton onClick={startNowCallback} title={renderData.title} />
     </div>

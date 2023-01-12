@@ -6,11 +6,13 @@ export interface IDBConnector<T extends Record<string, any>> {
     table: V,
     selector: (item: T[V]) => boolean,
   ): Promise<T[V] | undefined>;
+  getByKey<V extends keyof T>(table: V, key: string): Promise<T[V]>
   getMany<V extends keyof T>(
     table: V,
-    selector: (item:T[V]) => boolean,
+    selector: (item: T[V]) => boolean,
   ): Promise<T[V][]>;
   update<V extends keyof T>(table: V, data: T[V]): Promise<void>;
+  delete<V extends keyof T>(table: V, key: string): Promise<void>;
 }
 
 function promisifyRequest(request: IDBRequest): Promise<void> {
@@ -25,10 +27,35 @@ function promisifyRequest(request: IDBRequest): Promise<void> {
 }
 
 export default class LocalDBConnector<T extends Record<string, any>> implements IDBConnector<T> {
-  private connector:IDBProvider;
+  private connector: IDBProvider;
 
   constructor(connector: IDBProvider) {
     this.connector = connector;
+  }
+
+  async delete<V extends keyof T>(table: V, key: string): Promise<void> {
+    const tableName = table.toString();
+    const db = await this.connector.getDB();
+    const transaction = db.transaction(tableName, 'readwrite');
+    const objectStore = transaction.objectStore(tableName);
+    const request = objectStore.delete(key);
+    return promisifyRequest(request);
+  }
+
+  async getByKey<V extends keyof T>(table: V, key: string): Promise<T[V]> {
+    const tableName = table.toString();
+    const db = await this.connector.getDB();
+    const transaction = db.transaction(tableName, 'readwrite');
+    const objectStore = transaction.objectStore(tableName);
+    const request = objectStore.get(key);
+    return new Promise((resolve, reject) => {
+      request.addEventListener('success', () => {
+        resolve(request.result);
+      }, { once: true });
+      request.addEventListener('error', (e) => {
+        reject(e);
+      }, { once: true });
+    });
   }
 
   async create<V extends keyof T>(table: V, data: T[V]): Promise<void> {

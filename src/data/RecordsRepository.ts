@@ -6,6 +6,8 @@ export interface IRecordsRepository {
   getSingleRecord(selector: (record: Record) => boolean): Promise<Record | undefined>
   getAllRecords(filter?: (record: Record) => boolean): Promise<Record[]>
   updateRecord(record: Record): Promise<void>
+  getByKey(key: string): Promise<Record>;
+  deleteRecord(key: string): Promise<void>;
 }
 
 const RECORDS_TABLE = 'records';
@@ -15,6 +17,14 @@ export default class RecordsRepository implements IRecordsRepository {
 
   constructor(dbConnector: IDBConnector<DBStructure>) {
     this.dbConnector = dbConnector;
+  }
+
+  deleteRecord(key: string): Promise<void> {
+    return this.dbConnector.delete(RECORDS_TABLE, key);
+  }
+
+  getByKey(key: string): Promise<Record> {
+    return this.dbConnector.getByKey(RECORDS_TABLE, key);
   }
 
   getAllRecords(filter?: (record: Record) => boolean): Promise<Record[]> {

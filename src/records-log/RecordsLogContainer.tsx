@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useSetCurrentView from '../common/app/useSetCurrentView';
 import Header from '../components/Header';
 import SVGButton from '../components/SVGButton';
@@ -13,14 +13,24 @@ export default function RecordsLogContainer() {
   const setCurrentView = useSetCurrentView();
   const recordsModel = useRecordsModel();
   const [records, setRecords] = useState<Record[]>([]);
-  useEffect(() => {
-    const loadCurrenMonth = async () => {
-      const allRecords = await recordsModel.getAllRecords();
-      setRecords(allRecords.sort((lh, rh) => lh.startTime - rh.startTime));
-    };
-    loadCurrenMonth();
+  const loadRecords = useCallback(async () => {
+    const allRecords = await recordsModel.getAllRecords();
+    setRecords(allRecords.sort((lh, rh) => lh.startTime - rh.startTime));
   }, [recordsModel]);
-  const recordsToRender = records.map((r) => <RecordEntry record={r} key={r.id} />);
+  useEffect(() => {
+    loadRecords();
+  }, [loadRecords]);
+  const recordsToRender = records.map((r) => (
+    <RecordEntry
+      record={r}
+      key={r.id}
+      onEditClicked={() => setCurrentView('record-editor', { id: r.id })}
+      onDeleteClicked={() => {
+        recordsModel.deleteRecord(r.id);
+        loadRecords();
+      }}
+    />
+  ));
   return (
     <div className={styles.container}>
       <Header
