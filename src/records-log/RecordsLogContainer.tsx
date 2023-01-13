@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import useSetCurrentView from '../common/app/useSetCurrentView';
 import Header from '../components/Header';
 import SVGButton from '../components/SVGButton';
-import useRecordsModel from '../common/useRecordsModel';
+import useRecordsModel from '../common/model/useRecordsModel';
 import RecordEntry from './RecordEntry';
 import { Record } from '../data/data.types';
 import MainActionButton from '../components/MainActionButton';

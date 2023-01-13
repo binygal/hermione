@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
-import { IRecordsRepository } from '../../data/RecordsRepository';
-import { MockedInterface } from '../../test/TestingTypes';
+import { IRecordsRepository } from '../../../data/RecordsRepository';
+import { MockedInterface } from '../../../test/TestingTypes';
 import RecordsModel, { IRecordsModel } from '../RecordsModel';
 
 describe('Records Model', () => {
@@ -37,7 +37,7 @@ describe('Records Model', () => {
       expect(timeDiff).toEqual({ hours: 2, minutes: 3 });
     });
 
-    test.only('should return the right time according to 2 records when starts before start time', async () => {
+    test('should return the right time according to 2 records when starts before start time', async () => {
       const firstRecordStartDate = (new Date(2022, 7, 31, 23, 55)).getTime();
       const firstRecordEndDate = (new Date(2022, 8, 1, 0, 55)).getTime();
       repository.getAllRecords.mockResolvedValue([

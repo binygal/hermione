@@ -4,7 +4,7 @@ import {
 import { v4 } from 'uuid';
 import useSetCurrentView from '../common/app/useSetCurrentView';
 import { convertDateToInputString, convertInputStringToTimestamp } from '../common/extensions/date';
-import useRecordsModel from '../common/useRecordsModel';
+import useRecordsModel from '../common/model/useRecordsModel';
 import Header from '../components/Header';
 import MainActionButton from '../components/MainActionButton';
 import closeLogo from '../components/resources/close-circle.svg';

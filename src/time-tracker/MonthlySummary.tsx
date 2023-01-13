@@ -1,4 +1,5 @@
 import { TimeDiff } from '../common/extensions/date';
+import styles from './MonthlySummary.module.css';
 
 type MonthlySummaryProps = {
   monthlyRecord: TimeDiff
@@ -7,12 +8,12 @@ type MonthlySummaryProps = {
 export default function MonthlySummary(props: MonthlySummaryProps) {
   const { monthlyRecord } = props;
   return (
-    <div>
+    <div className={styles.container}>
       This month so far:
       {' '}
-      {monthlyRecord.hours}
+      {monthlyRecord.hours.toString().padStart(2, '0')}
       :
-      {monthlyRecord.minutes}
+      {monthlyRecord.minutes.toString().padStart(2, '0')}
     </div>
   );
 }

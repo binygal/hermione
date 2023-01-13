@@ -1,3 +1,4 @@
+import { promisifyRequest } from './db';
 import { IDBProvider } from './LocalDBProvider';
 
 export interface IDBConnector<T extends Record<string, any>> {
@@ -13,17 +14,6 @@ export interface IDBConnector<T extends Record<string, any>> {
   ): Promise<T[V][]>;
   update<V extends keyof T>(table: V, data: T[V]): Promise<void>;
   delete<V extends keyof T>(table: V, key: string): Promise<void>;
-}
-
-function promisifyRequest(request: IDBRequest): Promise<void> {
-  return new Promise((resolve, reject) => {
-    request.addEventListener('success', () => {
-      resolve();
-    }, { once: true });
-    request.addEventListener('error', (e) => {
-      reject(e);
-    }, { once: true });
-  });
 }
 
 export default class LocalDBConnector<T extends Record<string, any>> implements IDBConnector<T> {

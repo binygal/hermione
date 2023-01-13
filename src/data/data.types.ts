@@ -4,6 +4,13 @@ export type Record = {
   endTime?: number;
 };
 
+export type SettingsObject = {
+  id: string;
+  firstDayOfMonth: number;
+  numberOfHoursPerDay: number
+};
+
 export type DBStructure = {
   records: Record
+  settings: SettingsObject
 };

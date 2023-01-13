@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useMemo } from 'react';
 import Presentor from '../src/common/app/Presentor';
-import MainModelContext, { MainModel } from '../src/common/MainModelContext';
+import MainModelContext, { MainModel } from '../src/common/model/MainModelContext';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {

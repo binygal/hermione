@@ -1,20 +1,28 @@
 import React, { useMemo, useState } from 'react';
 import RecordEditorContainer from '../../record-editor/RecordEditorContainer';
 import RecordsLogContainer from '../../records-log/RecordsLogContainer';
+import SettingsContainer from '../../settings/SettingsContainer';
 import TimeTrackerContainer from '../../time-tracker/TimeTrackerContainer';
 import PresentorContext, { ViewNames } from './PresentorContext';
 
 function getViewFromName(viewName: ViewNames): React.FunctionComponent | undefined {
-  if (viewName === 'main') {
-    return TimeTrackerContainer;
+  switch (viewName) {
+    case 'main': {
+      return TimeTrackerContainer;
+    }
+    case 'logs-container': {
+      return RecordsLogContainer;
+    }
+    case 'record-editor': {
+      return RecordEditorContainer;
+    }
+    case 'settings': {
+      return SettingsContainer;
+    }
+    default: {
+      return undefined;
+    }
   }
-  if (viewName === 'logs-container') {
-    return RecordsLogContainer;
-  }
-  if (viewName === 'record-editor') {
-    return RecordEditorContainer;
-  }
-  return undefined;
 }
 
 export default function Presentor() {

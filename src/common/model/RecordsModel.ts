@@ -1,7 +1,7 @@
-import { Record } from '../data/data.types';
-import RecordExtensions from '../data/RecordExtensions';
-import { IRecordsRepository } from '../data/RecordsRepository';
-import { getTimeDiff, TimeDiff } from './extensions/date';
+import { Record } from '../../data/data.types';
+import RecordExtensions from '../../data/RecordExtensions';
+import { IRecordsRepository } from '../../data/RecordsRepository';
+import { getTimeDiff, TimeDiff } from '../extensions/date';
 
 export interface IRecordsModel {
   createRecord(record: Record): Promise<void>;
