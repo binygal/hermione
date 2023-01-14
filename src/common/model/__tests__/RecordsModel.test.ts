@@ -1,10 +1,12 @@
 import { v4 } from 'uuid';
 import { IRecordsRepository } from '../../../data/RecordsRepository';
+import { ISettingsRepository } from '../../../settings/SettingsRepository';
 import { MockedInterface } from '../../../test/TestingTypes';
 import RecordsModel, { IRecordsModel } from '../RecordsModel';
 
 describe('Records Model', () => {
   let repository: MockedInterface<IRecordsRepository>;
+  let settingsRepository: MockedInterface<ISettingsRepository>;
   let recordsModel: IRecordsModel;
 
   beforeEach(() => {
@@ -16,7 +18,11 @@ describe('Records Model', () => {
       getSingleRecord: jest.fn(),
       updateRecord: jest.fn(),
     };
-    recordsModel = new RecordsModel(repository);
+    settingsRepository = {
+      get: jest.fn(),
+      updateSettings: jest.fn(),
+    };
+    recordsModel = new RecordsModel(repository, settingsRepository);
   });
 
   describe('getTotalTimeBetweenDates', () => {

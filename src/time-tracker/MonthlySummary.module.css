@@ -1,3 +1,11 @@
 .container {
     text-align: center;
 }
+
+.timeSoFar {
+    margin-bottom: 10px;
+}
+
+.remainingTime {
+
+}

@@ -6,14 +6,13 @@ import styles from '../../styles/Home.module.css';
 import ElapsingTime from '../components/ElapsingTime';
 import Message from '../components/Message';
 import useRecordsModel from '../common/model/useRecordsModel';
-import { getTimeDiff, TimeDiff } from '../common/extensions/date';
+import { getTimeDiff, monthEncapsulingDates, TimeDiff } from '../common/extensions/date';
 import useSetCurrentView from '../common/app/useSetCurrentView';
 import SVGButton from '../components/SVGButton';
 import listLogo from '../components/resources/list.svg';
 import settingsLogo from '../components/resources/settings.svg';
 import MonthlySummary from './MonthlySummary';
 import useSettingsModel from '../common/model/useSettingsModel';
-import monthEncapsulingDates from './monthEncapsulingDates';
 
 export default function TimeTrackerContainer() {
   const recordsModel = useRecordsModel();
@@ -21,6 +20,7 @@ export default function TimeTrackerContainer() {
   const [isWorking, setIsWorking] = useState(false);
   const [time, setTime] = useState<TimeDiff>({ hours: 0, minutes: 0 });
   const [monthlySummary, setMonthlySummary] = useState({ hours: 0, minutes: 0 });
+  const [missingMonthlyTime, setMissingMonthlyTime] = useState({ hours: 0, minutes: 0 });
   const renderData = {
     logo: isWorking ? 'working' : 'coffee' as 'working' | 'coffee',
     title: isWorking ? 'stop' : 'start',
@@ -42,6 +42,14 @@ export default function TimeTrackerContainer() {
       );
       const monthlyData = await recordsModel.getTotalTimeBetweenDates(firstMonthDay, lastMonthDay);
       setMonthlySummary(monthlyData);
+      const expectedHours = await recordsModel.expectedHoursPerMonth();
+
+      const missingMinutes = monthlyData.minutes === 0 ? 0 : 60 - monthlyData.minutes;
+      const missingHours = Math.max(
+        0,
+        expectedHours - monthlyData.hours - (missingMinutes === 0 ? 0 : 1),
+      );
+      setMissingMonthlyTime({ hours: missingHours, minutes: missingMinutes });
     };
 
     const intervalID = setInterval(async () => {
@@ -77,7 +85,7 @@ export default function TimeTrackerContainer() {
       <div className={styles.containerItem}>
         <CurrentStateDisplay logo={renderData.logo} />
       </div>
-      <MonthlySummary monthlyRecord={monthlySummary} />
+      <MonthlySummary monthlyRecord={monthlySummary} timeToCompletion={missingMonthlyTime} />
       {isWorking ? <ElapsingTime hours={time.hours} minutes={time.minutes} /> : <Message message="Start to see elapsing time" />}
       <MainActionButton onClick={startNowCallback} title={renderData.title} />
     </div>

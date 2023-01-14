@@ -1,7 +1,8 @@
 import { Record } from '../../data/data.types';
 import RecordExtensions from '../../data/RecordExtensions';
 import { IRecordsRepository } from '../../data/RecordsRepository';
-import { getTimeDiff, TimeDiff } from '../extensions/date';
+import { ISettingsRepository } from '../../settings/SettingsRepository';
+import { getTimeDiff, numberOfWorkingDaysInMonth, TimeDiff } from '../extensions/date';
 
 export interface IRecordsModel {
   createRecord(record: Record): Promise<void>;
@@ -14,13 +15,23 @@ export interface IRecordsModel {
   deleteRecord(key: string): Promise<void>
   isCurrentlyRunning: Promise<boolean>
   getTotalTimeBetweenDates(startingDate: number, endingDate: number): Promise<TimeDiff>;
+  expectedHoursPerMonth(): Promise<number>;
 }
 
 export default class RecordsModel implements IRecordsModel {
   private recordsRepository: IRecordsRepository;
 
-  constructor(recordsRepository: IRecordsRepository) {
+  private settingsRepository: ISettingsRepository;
+
+  constructor(recordsRepository: IRecordsRepository, settingsRepository: ISettingsRepository) {
     this.recordsRepository = recordsRepository;
+    this.settingsRepository = settingsRepository;
+  }
+
+  async expectedHoursPerMonth(): Promise<number> {
+    const settings = await this.settingsRepository.get();
+    const workingDays = numberOfWorkingDaysInMonth(Date.now(), settings.firstDayOfMonth);
+    return workingDays * settings.numberOfHoursPerDay;
   }
 
   async getTotalTimeBetweenDates(startingDate: number, endingDate: number): Promise<TimeDiff> {

@@ -24,9 +24,10 @@ export class MainModel implements IMainModel {
     const dbProvider = new LocalDBProvider();
     const dbConnector = new LocalDBConnector(dbProvider);
     const recordsRepository = new RecordsRepository(dbConnector);
-    this.recordsModel = new RecordsModel(recordsRepository);
-
     const settingsRepository = new SettingsRepository(dbConnector);
+
+    this.recordsModel = new RecordsModel(recordsRepository, settingsRepository);
+
     this.settingsModel = new SettingsModel(settingsRepository);
   }
 }
