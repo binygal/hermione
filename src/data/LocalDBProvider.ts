@@ -5,7 +5,7 @@ export interface IDBProvider {
 }
 
 const DB_NAME = 'HERMONINI_TIME_TRACKER_DB';
-const LATEST_DB_VERSION = 1;
+const LATEST_DB_VERSION = 2;
 
 export default class LocalDBProvider implements IDBProvider {
   private db?: IDBDatabase;
@@ -50,10 +50,10 @@ export default class LocalDBProvider implements IDBProvider {
       request.addEventListener('error', () => {
         this.dbState = 'faulted';
       }, { once: true });
-      request.addEventListener('upgradeneeded', (e) => {
+      request.addEventListener('upgradeneeded', (e: IDBVersionChangeEvent) => {
         if (e.target instanceof IDBOpenDBRequest) {
           const migrationManager = new LocalDBMigrator();
-          migrationManager.migrate(e.target.result, LATEST_DB_VERSION);
+          migrationManager.migrate(e.target.result, LATEST_DB_VERSION, e.oldVersion);
         }
       });
     });

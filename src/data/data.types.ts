@@ -10,7 +10,13 @@ export type SettingsObject = {
   numberOfHoursPerDay: number
 };
 
+export type Vacation = {
+  id: string;
+  vacationDate: number;
+};
+
 export type DBStructure = {
-  records: Record
-  settings: SettingsObject
+  records: Record;
+  settings: SettingsObject;
+  vacations: Vacation;
 };

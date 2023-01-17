@@ -3,6 +3,7 @@ import RecordEditorContainer from '../../record-editor/RecordEditorContainer';
 import RecordsLogContainer from '../../records-log/RecordsLogContainer';
 import SettingsContainer from '../../settings/SettingsContainer';
 import TimeTrackerContainer from '../../time-tracker/TimeTrackerContainer';
+import VacationPickerEditor from '../../vacation-picker/VacationPickerEditor';
 import PresentorContext, { ViewNames } from './PresentorContext';
 
 function getViewFromName(viewName: ViewNames): React.FunctionComponent | undefined {
@@ -18,6 +19,9 @@ function getViewFromName(viewName: ViewNames): React.FunctionComponent | undefin
     }
     case 'settings': {
       return SettingsContainer;
+    }
+    case 'vacation-picker': {
+      return VacationPickerEditor;
     }
     default: {
       return undefined;

@@ -4,11 +4,14 @@ import LocalDBProvider from '../../data/LocalDBProvider';
 import RecordsRepository from '../../data/RecordsRepository';
 import SettingsModel, { ISettingsModel } from '../../settings/SettingsModel';
 import SettingsRepository from '../../settings/SettingsRepository';
+import VacationsModel, { IVacationsModel } from '../../vacation-picker/VacationsModel';
+import VacationsRepository from '../../vacation-picker/VacationsRepository';
 import RecordsModel, { IRecordsModel } from './RecordsModel';
 
 export interface IMainModel {
   readonly recordsModel: IRecordsModel;
   readonly settingsModel: ISettingsModel;
+  readonly vacationsModel: IVacationsModel
 }
 
 export type MainModelContextValue = {
@@ -20,6 +23,8 @@ export class MainModel implements IMainModel {
 
   readonly settingsModel: ISettingsModel;
 
+  readonly vacationsModel: IVacationsModel;
+
   constructor() {
     const dbProvider = new LocalDBProvider();
     const dbConnector = new LocalDBConnector(dbProvider);
@@ -29,6 +34,9 @@ export class MainModel implements IMainModel {
     this.recordsModel = new RecordsModel(recordsRepository, settingsRepository);
 
     this.settingsModel = new SettingsModel(settingsRepository);
+
+    const vacationsRepository = new VacationsRepository(dbConnector);
+    this.vacationsModel = new VacationsModel(vacationsRepository);
   }
 }
 

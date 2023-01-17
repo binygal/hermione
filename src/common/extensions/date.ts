@@ -10,10 +10,7 @@ export function utcDate(year: number, month: number, day: number): Date {
   date.setUTCFullYear(year);
   date.setUTCMonth(month);
   date.setUTCDate(day);
-  date.setUTCHours(0);
-  date.setUTCMinutes(0);
-  date.setUTCSeconds(0);
-  date.setUTCMilliseconds(0);
+  date.setUTCHours(0, 0, 0, 0);
   return date;
 }
 
@@ -81,4 +78,10 @@ export function numberOfWorkingDaysInMonth(date: number, firstDayOfMonth: number
 
   const middleWeeksDays = ((numberOfDaysInPeriod - firstWeekDays - lastWeekDay) / 7) * 5;
   return firstWeekWorkingDays + lastWeekWorkingDays + middleWeeksDays;
+}
+
+export function convertDateToDateString(date: Date): string {
+  return `${date.getFullYear()}-${
+    date.getMonth().toString().padStart(2, '0')}-${
+    date.getDate().toString().padStart(2, '0')}`;
 }

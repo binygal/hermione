@@ -54,6 +54,7 @@ export default function SettingsContainer() {
         <Header content="Settings" rightIcon={<SVGButton svg={closeLogo} onClick={() => setCurrentView('main')} />} />
         First day of the month
         <input type="number" max={28} min={1} onChange={onDayOfMonthChanged} value={settingsOnEdit.firstDayOfMonth} onBlur={onDayOfMonthLostFocus} />
+        <button type="button" onClick={() => setCurrentView('vacation-picker')}>Set vacation days</button>
       </div>
       <MainActionButton title="Save settings" onClick={saveSettings} />
     </div>
