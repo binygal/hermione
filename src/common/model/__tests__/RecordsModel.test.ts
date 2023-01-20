@@ -2,11 +2,13 @@ import { v4 } from 'uuid';
 import { IRecordsRepository } from '../../../data/RecordsRepository';
 import { ISettingsRepository } from '../../../settings/SettingsRepository';
 import { MockedInterface } from '../../../test/TestingTypes';
+import { IVacationsRepository } from '../../../vacation-picker/VacationsRepository';
 import RecordsModel, { IRecordsModel } from '../RecordsModel';
 
 describe('Records Model', () => {
   let repository: MockedInterface<IRecordsRepository>;
   let settingsRepository: MockedInterface<ISettingsRepository>;
+  let vacationsRepository: MockedInterface<IVacationsRepository>;
   let recordsModel: IRecordsModel;
 
   beforeEach(() => {
@@ -22,7 +24,13 @@ describe('Records Model', () => {
       get: jest.fn(),
       updateSettings: jest.fn(),
     };
-    recordsModel = new RecordsModel(repository, settingsRepository);
+    vacationsRepository = {
+      getAll: jest.fn(),
+      add: jest.fn(),
+      getMany: jest.fn(),
+      remove: jest.fn(),
+    };
+    recordsModel = new RecordsModel(repository, settingsRepository, vacationsRepository);
   });
 
   describe('getTotalTimeBetweenDates', () => {
@@ -38,7 +46,7 @@ describe('Records Model', () => {
 
       const startDate = (new Date(2022, 9, 1)).getTime();
       const endDate = (new Date(2022, 10, 1)).getTime();
-      const timeDiff = await recordsModel.getTotalTimeBetweenDates(startDate, endDate);
+      const timeDiff = await recordsModel.getTotalRecordsTimeBetweenDates(startDate, endDate);
 
       expect(timeDiff).toEqual({ hours: 2, minutes: 3 });
     });
@@ -52,7 +60,7 @@ describe('Records Model', () => {
 
       const startDate = (new Date(2022, 8, 1)).getTime();
       const endDate = (new Date(2022, 9, 1)).getTime();
-      const timeDiff = await recordsModel.getTotalTimeBetweenDates(startDate, endDate);
+      const timeDiff = await recordsModel.getTotalRecordsTimeBetweenDates(startDate, endDate);
 
       expect(timeDiff).toEqual({ hours: 0, minutes: 55 });
     });

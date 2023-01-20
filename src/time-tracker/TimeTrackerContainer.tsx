@@ -40,7 +40,8 @@ export default function TimeTrackerContainer() {
         settings.firstDayOfMonth,
         today.getTime(),
       );
-      const monthlyData = await recordsModel.getTotalTimeBetweenDates(firstMonthDay, lastMonthDay);
+      const monthlyData = await recordsModel
+        .getTotalRecordsTimeBetweenDates(firstMonthDay, lastMonthDay);
       setMonthlySummary(monthlyData);
       const expectedHours = await recordsModel.expectedHoursPerMonth();
 

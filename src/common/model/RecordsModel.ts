@@ -1,8 +1,11 @@
-import { Record } from '../../data/data.types';
+import { Record, Vacation } from '../../data/data.types';
 import RecordExtensions from '../../data/RecordExtensions';
 import { IRecordsRepository } from '../../data/RecordsRepository';
 import { ISettingsRepository } from '../../settings/SettingsRepository';
-import { getTimeDiff, numberOfWorkingDaysInMonth, TimeDiff } from '../extensions/date';
+import { IVacationsRepository } from '../../vacation-picker/VacationsRepository';
+import {
+  getTimeDiff, monthEncapsulingDates, numberOfWorkingDaysInMonth, TimeDiff,
+} from '../extensions/date';
 
 export interface IRecordsModel {
   createRecord(record: Record): Promise<void>;
@@ -14,7 +17,7 @@ export interface IRecordsModel {
   getRecord(key: string): Promise<Record>
   deleteRecord(key: string): Promise<void>
   isCurrentlyRunning: Promise<boolean>
-  getTotalTimeBetweenDates(startingDate: number, endingDate: number): Promise<TimeDiff>;
+  getTotalRecordsTimeBetweenDates(startingDate: number, endingDate: number): Promise<TimeDiff>;
   expectedHoursPerMonth(): Promise<number>;
 }
 
@@ -23,18 +26,37 @@ export default class RecordsModel implements IRecordsModel {
 
   private settingsRepository: ISettingsRepository;
 
-  constructor(recordsRepository: IRecordsRepository, settingsRepository: ISettingsRepository) {
+  private vacationsRepository: IVacationsRepository;
+
+  constructor(
+    recordsRepository: IRecordsRepository,
+    settingsRepository: ISettingsRepository,
+    vacationsRepository: IVacationsRepository,
+  ) {
     this.recordsRepository = recordsRepository;
     this.settingsRepository = settingsRepository;
+    this.vacationsRepository = vacationsRepository;
+  }
+
+  private async getCurrentMonthVacations(): Promise<Vacation[]> {
+    const settings = await this.settingsRepository.get();
+    const { firstDayOfMonth } = settings;
+    const [startOfMonth, endOfMonth] = monthEncapsulingDates(firstDayOfMonth, Date.now());
+    return this.vacationsRepository
+      .getMany((v) => v.vacationDate >= startOfMonth && v.vacationDate < endOfMonth);
   }
 
   async expectedHoursPerMonth(): Promise<number> {
     const settings = await this.settingsRepository.get();
     const workingDays = numberOfWorkingDaysInMonth(Date.now(), settings.firstDayOfMonth);
-    return workingDays * settings.numberOfHoursPerDay;
+    const vacations = await this.getCurrentMonthVacations();
+    return (workingDays - vacations.length) * settings.numberOfHoursPerDay;
   }
 
-  async getTotalTimeBetweenDates(startingDate: number, endingDate: number): Promise<TimeDiff> {
+  async getTotalRecordsTimeBetweenDates(
+    startingDate: number,
+    endingDate: number,
+  ): Promise<TimeDiff> {
     const records = await this.recordsRepository
       .getAllRecords(
         (r) => (r.startTime < endingDate) && !!r.endTime && (r.endTime > startingDate),

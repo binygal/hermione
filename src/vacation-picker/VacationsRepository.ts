@@ -5,6 +5,7 @@ export interface IVacationsRepository {
   add(vacation: Vacation): Promise<void>;
   remove(id: string): Promise<void>;
   getAll(): Promise<Vacation[]>
+  getMany(filter: (vacation:Vacation) => boolean): Promise<Vacation[]>;
 }
 
 const VACATIONS_TABLE_NAME = 'vacations';
@@ -14,6 +15,10 @@ export default class VacationsRepository implements IVacationsRepository {
 
   constructor(dbConnector: IDBConnector<DBStructure>) {
     this.dbConnector = dbConnector;
+  }
+
+  getMany(filter: (vacation: Vacation) => boolean): Promise<Vacation[]> {
+    return this.dbConnector.getMany(VACATIONS_TABLE_NAME, filter);
   }
 
   getAll(): Promise<Vacation[]> {

@@ -30,12 +30,17 @@ export class MainModel implements IMainModel {
     const dbConnector = new LocalDBConnector(dbProvider);
     const recordsRepository = new RecordsRepository(dbConnector);
     const settingsRepository = new SettingsRepository(dbConnector);
+    const vacationsRepository = new VacationsRepository(dbConnector);
 
-    this.recordsModel = new RecordsModel(recordsRepository, settingsRepository);
+    this.recordsModel = new RecordsModel(
+      recordsRepository,
+      settingsRepository,
+
+      vacationsRepository,
+    );
 
     this.settingsModel = new SettingsModel(settingsRepository);
 
-    const vacationsRepository = new VacationsRepository(dbConnector);
     this.vacationsModel = new VacationsModel(vacationsRepository);
   }
 }
