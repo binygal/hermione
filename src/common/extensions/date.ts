@@ -5,15 +5,6 @@ export type TimeDiff = {
 
 const SECONDS_PER_DAY = 86400000;
 
-export function utcDate(year: number, month: number, day: number): Date {
-  const date = new Date();
-  date.setUTCFullYear(year);
-  date.setUTCMonth(month);
-  date.setUTCDate(day);
-  date.setUTCHours(0, 0, 0, 0);
-  return date;
-}
-
 export function utcDateFromTimestamp(timestamp: number): Date {
   const date = new Date(timestamp);
   return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -51,9 +42,9 @@ export function monthEncapsulingDates(
   const startingMonth = todayAsDate.getDate() < firstDayOfMonth
     ? todayAsDate.getMonth() - 1
     : todayAsDate.getMonth();
-  const firstDay = utcDate(todayAsDate.getFullYear(), startingMonth, firstDayOfMonth);
-  const lastDay = utcDate(todayAsDate.getFullYear(), startingMonth + 1, firstDayOfMonth);
-  return [firstDay.getTime(), lastDay.getTime()];
+  const firstDay = Date.UTC(todayAsDate.getFullYear(), startingMonth, firstDayOfMonth);
+  const lastDay = Date.UTC(todayAsDate.getFullYear(), startingMonth + 1, firstDayOfMonth);
+  return [firstDay, lastDay];
 }
 
 export function numberOfDaysBetweenDates(lhDate: number, rhDate: number): number {
