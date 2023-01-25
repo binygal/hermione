@@ -16,7 +16,7 @@ export function utcDate(year: number, month: number, day: number): Date {
 
 export function utcDateFromTimestamp(timestamp: number): Date {
   const date = new Date(timestamp);
-  return utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 }
 
 export function getTimeDiff(lh: number, rh: number): TimeDiff {

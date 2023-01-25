@@ -35,11 +35,28 @@ export default function SettingsContainer() {
     });
   }, [settingsOnEdit]);
 
+  const onNumberOfHoursChanged = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const numericValue = Number.parseFloat(e.target.value);
+    setSettingsOnEdit({
+      ...settingsOnEdit,
+      numberOfHoursPerDay: Math.min(24, Math.max(0, numericValue)),
+    });
+  }, [settingsOnEdit]);
+
   const onDayOfMonthLostFocus = useCallback((e: FocusEvent<HTMLInputElement, Element>) => {
     if (e.target.value === '') {
       setSettingsOnEdit({
         ...settingsOnEdit,
         firstDayOfMonth: 1,
+      });
+    }
+  }, [settingsOnEdit]);
+
+  const onNumberOfHoursLostFocus = useCallback((e: FocusEvent<HTMLInputElement, Element>) => {
+    if (e.target.value === '') {
+      setSettingsOnEdit({
+        ...settingsOnEdit,
+        numberOfHoursPerDay: 9,
       });
     }
   }, [settingsOnEdit]);
@@ -54,6 +71,8 @@ export default function SettingsContainer() {
         <Header content="Settings" rightIcon={<SVGButton svg={closeLogo} onClick={() => setCurrentView('main')} />} />
         First day of the month
         <input type="number" max={28} min={1} onChange={onDayOfMonthChanged} value={settingsOnEdit.firstDayOfMonth} onBlur={onDayOfMonthLostFocus} />
+        Required number of hours per day
+        <input type="number" max={24} min={0} onChange={onNumberOfHoursChanged} value={settingsOnEdit.numberOfHoursPerDay} onBlur={onNumberOfHoursLostFocus} step=".01" />
         <button type="button" onClick={() => setCurrentView('vacation-picker')}>Set vacation days</button>
       </div>
       <MainActionButton title="Save settings" onClick={saveSettings} />

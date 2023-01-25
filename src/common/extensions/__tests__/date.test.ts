@@ -1,5 +1,5 @@
 import {
-  getTimeDiff, monthEncapsulingDates, numberOfDaysBetweenDates, numberOfWorkingDaysInMonth, utcDate,
+  getTimeDiff, monthEncapsulingDates, numberOfDaysBetweenDates, numberOfWorkingDaysInMonth,
 } from '../date';
 
 describe('getTimeDiff', () => {
@@ -20,45 +20,45 @@ describe('getTimeDiff', () => {
 
 describe('encapsulating dates of month', () => {
   test('should return the first day of the month when getting 1', () => {
-    const mockToday = utcDate(2022, 11, 5).getTime();
+    const mockToday = Date.UTC(2022, 11, 5);
     const result = monthEncapsulingDates(1, mockToday);
 
-    const firstDay = utcDate(2022, 11, 1).getTime();
-    const lastDay = utcDate(2023, 0, 1).getTime();
+    const firstDay = Date.UTC(2022, 11, 1);
+    const lastDay = Date.UTC(2023, 0, 1);
 
     expect(result[0]).toEqual(firstDay);
     expect(result[1]).toEqual(lastDay);
   });
 
   test('should return the last month when first day of the month is later', () => {
-    const mockToday = utcDate(2022, 11, 5).getTime();
+    const mockToday = Date.UTC(2022, 11, 5);
     const result = monthEncapsulingDates(15, mockToday);
 
-    const firstDay = utcDate(2022, 10, 15).getTime();
-    const lastDay = utcDate(2022, 11, 15).getTime();
+    const firstDay = Date.UTC(2022, 10, 15);
+    const lastDay = Date.UTC(2022, 11, 15);
 
     expect(result[0]).toEqual(firstDay);
     expect(result[1]).toEqual(lastDay);
   });
 
   test('should return the last month when first day of the month is before', () => {
-    const mockToday = utcDate(2022, 11, 20).getTime();
+    const mockToday = Date.UTC(2022, 11, 20);
     const result = monthEncapsulingDates(15, mockToday);
 
-    const firstDay = utcDate(2022, 11, 15).getTime();
-    const lastDay = utcDate(2023, 0, 15).getTime();
+    const firstDay = Date.UTC(2022, 11, 15);
+    const lastDay = Date.UTC(2023, 0, 15);
 
     expect(result[0]).toEqual(firstDay);
     expect(result[1]).toEqual(lastDay);
   });
 
   test('should return the first day of Jan when day in Jan provided', () => {
-    const date = utcDate(2023, 0, 5);
+    const date = new Date(Date.UTC(2023, 0, 5));
     const firstDayOfTheMonth = 1;
     const result = monthEncapsulingDates(firstDayOfTheMonth, date.getTime());
 
-    const firstDay = utcDate(2023, 0, 1).getTime();
-    const lastDay = utcDate(2023, 1, 1).getTime();
+    const firstDay = Date.UTC(2023, 0, 1);
+    const lastDay = Date.UTC(2023, 1, 1);
 
     expect(result[0]).toEqual(firstDay);
     expect(result[1]).toEqual(lastDay);
