@@ -17,3 +17,11 @@
 .timeContainer button:first-of-type {
     margin-left: auto;
 }
+
+.summary {
+    margin-top: 7px;
+    border-top: 1px dotted white;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
