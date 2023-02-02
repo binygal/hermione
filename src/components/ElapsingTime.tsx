@@ -3,7 +3,7 @@ import styles from './ElapsingTime.module.css';
 type ElapsingTimeProps = {
   hours: number;
   minutes: number;
-  size: 'big' | 'small'
+  size?: 'big' | 'small'
 };
 
 export default function ElapsingTime(props: ElapsingTimeProps): JSX.Element {
@@ -20,3 +20,7 @@ export default function ElapsingTime(props: ElapsingTimeProps): JSX.Element {
     </div>
   );
 }
+
+ElapsingTime.defaultProps = {
+  size: 'big',
+};
