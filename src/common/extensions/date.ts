@@ -22,8 +22,16 @@ export function convertDateToInputString(date: Date): string {
 }
 
 export function convertInputStringToTimestamp(inputString: string): number {
-  const date = new Date(inputString);
-  return date.getTime();
+  const timestampPattern = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
+  const inputParts = inputString.match(timestampPattern);
+  const [,year, month, day, hour, minutes] = inputParts ?? [];
+  return Date.UTC(
+    Number.parseInt(year, 10),
+    Number.parseInt(month, 10) - 1,
+    Number.parseInt(day, 10),
+    Number.parseInt(hour, 10),
+    Number.parseInt(minutes, 10),
+  );
 }
 
 export function isSameDay(lh: number, rh: number): boolean {

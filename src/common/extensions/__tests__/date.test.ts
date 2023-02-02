@@ -1,4 +1,5 @@
 import {
+  convertInputStringToTimestamp,
   getTimeDiff, monthEncapsulingDates, numberOfDaysBetweenDates, numberOfWorkingDaysInMonth,
 } from '../date';
 
@@ -82,5 +83,16 @@ describe('number of working day on a month', () => {
     const result = numberOfWorkingDaysInMonth(date.getTime(), firstDayOfTheMonth);
 
     expect(result).toBe(23);
+  });
+});
+
+describe('convertInputStringToTimestamp', () => {
+  test('should return the right utc date for given input', () => {
+    const input = '2023-02-02T17:24';
+    const expectedTimestamp = 1675358640000;
+
+    const result = convertInputStringToTimestamp(input);
+
+    expect(result).toEqual(expectedTimestamp);
   });
 });
