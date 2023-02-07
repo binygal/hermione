@@ -30,37 +30,45 @@ export default function TimeTrackerContainer() {
     title: isWorking ? 'stop' : 'start',
   };
 
+  const updateMonthlySummary = useCallback(async () => {
+    const settings = await settingsModel.get();
+
+    const today = new Date();
+    const [firstMonthDay, lastMonthDay] = monthEncapsulingDates(
+      settings.firstDayOfMonth,
+      today.getTime(),
+    );
+    const monthlyData = await recordsModel
+      .getTotalRecordsTimeBetweenDates(firstMonthDay, lastMonthDay);
+    setMonthlySummary(monthlyData);
+    const expectedHours = await recordsModel.expectedHoursPerMonth();
+
+    const missingMinutes = monthlyData.minutes === 0 ? 0 : 60 - monthlyData.minutes;
+    const missingHours = Math.max(
+      0,
+      expectedHours - monthlyData.hours - (missingMinutes === 0 ? 0 : 1),
+    );
+    setMissingMonthlyTime({ hours: missingHours, minutes: missingMinutes });
+  }, [recordsModel, settingsModel]);
+
+  const updateDailySummary = useCallback(async () => {
+    const dailyData = await recordsModel.getTotalRecordsTimeBetweenDates(
+      getToday(),
+      getToday(1),
+    );
+    setDailySummary(dailyData);
+  }, [recordsModel]);
+
   useEffect(() => {
     const checkWorkingState = async () => {
-      const settings = await settingsModel.get();
       const currentRecord = await recordsModel.currentOnGoingRecord;
       setIsWorking(currentRecord != null);
       if (currentRecord) {
         setTime(getTimeDiff(currentRecord?.startTime, Date.now()));
       }
 
-      const today = new Date();
-      const [firstMonthDay, lastMonthDay] = monthEncapsulingDates(
-        settings.firstDayOfMonth,
-        today.getTime(),
-      );
-      const monthlyData = await recordsModel
-        .getTotalRecordsTimeBetweenDates(firstMonthDay, lastMonthDay);
-      setMonthlySummary(monthlyData);
-      const expectedHours = await recordsModel.expectedHoursPerMonth();
-
-      const missingMinutes = monthlyData.minutes === 0 ? 0 : 60 - monthlyData.minutes;
-      const missingHours = Math.max(
-        0,
-        expectedHours - monthlyData.hours - (missingMinutes === 0 ? 0 : 1),
-      );
-      setMissingMonthlyTime({ hours: missingHours, minutes: missingMinutes });
-
-      const dailyData = await recordsModel.getTotalRecordsTimeBetweenDates(
-        getToday(),
-        getToday(1),
-      );
-      setDailySummary(dailyData);
+      await updateMonthlySummary();
+      await updateDailySummary();
     };
 
     const intervalID = setInterval(async () => {
@@ -73,7 +81,7 @@ export default function TimeTrackerContainer() {
     return () => {
       clearInterval(intervalID);
     };
-  }, [recordsModel, settingsModel]);
+  }, [recordsModel.currentOnGoingRecord, updateDailySummary, updateMonthlySummary]);
 
   const startNowCallback = useCallback(
     async () => {
