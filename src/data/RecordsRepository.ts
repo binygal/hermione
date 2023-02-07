@@ -36,6 +36,9 @@ export default class RecordsRepository implements IRecordsRepository {
   }
 
   async createRecord(record: Record): Promise<void> {
+    if (record.endTime && record.endTime < record.startTime) {
+      throw new Error('corrupted data on saving record');
+    }
     await this.dbConnector.create(RECORDS_TABLE, record);
   }
 

@@ -21,6 +21,10 @@ export default class SettingsRepository implements ISettingsRepository {
   }
 
   updateSettings(settings: SettingsObject): Promise<void> {
+    if (!Number.isFinite(settings.firstDayOfMonth)
+     || !Number.isFinite(settings.numberOfHoursPerDay)) {
+      throw new Error('invalid settings data');
+    }
     return this.dbConnector.update(SETTINGS_TABLE, settings);
   }
 }

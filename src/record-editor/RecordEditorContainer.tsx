@@ -2,6 +2,7 @@ import {
   useCallback, useState, ChangeEvent, useEffect,
 } from 'react';
 import { v4 } from 'uuid';
+import useNotify from '../common/app/useNotify';
 import useSetCurrentView from '../common/app/useSetCurrentView';
 import { convertDateToInputString, convertInputStringToTimestamp } from '../common/extensions/date';
 import useRecordsModel from '../common/model/useRecordsModel';
@@ -25,6 +26,7 @@ function createTemplateRecord(): Record {
 export default function RecordEditorContainer(props: RecordEditorContainerProps) {
   const { id } = props;
   const setCurrentView = useSetCurrentView();
+  const notify = useNotify();
   const [recordOnEdit, setRecordOnEdit] = useState(createTemplateRecord());
   const recordsModel = useRecordsModel();
 
@@ -60,13 +62,17 @@ export default function RecordEditorContainer(props: RecordEditorContainerProps)
   );
 
   const saveRecord = useCallback(async () => {
-    if (id) {
-      await recordsModel.updateRecord(recordOnEdit);
-    } else {
-      await recordsModel.createRecord(recordOnEdit);
+    try {
+      if (id) {
+        await recordsModel.updateRecord(recordOnEdit);
+      } else {
+        await recordsModel.createRecord(recordOnEdit);
+      }
+      setCurrentView('logs-container');
+    } catch {
+      notify.error('Error on storing record');
     }
-    setCurrentView('logs-container');
-  }, [id, recordOnEdit, recordsModel, setCurrentView]);
+  }, [id, notify, recordOnEdit, recordsModel, setCurrentView]);
 
   return (
     <div className={styles.container}>

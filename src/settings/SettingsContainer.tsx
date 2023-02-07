@@ -1,6 +1,7 @@
 import {
   ChangeEvent, FocusEvent, useCallback, useEffect, useState,
 } from 'react';
+import useNotify from '../common/app/useNotify';
 import useSetCurrentView from '../common/app/useSetCurrentView';
 import useSettingsModel from '../common/model/useSettingsModel';
 import Header from '../components/Header';
@@ -12,6 +13,7 @@ import styles from './SettingsContainer.module.css';
 
 export default function SettingsContainer() {
   const setCurrentView = useSetCurrentView();
+  const notify = useNotify();
   const settingsModel = useSettingsModel();
 
   const [settingsOnEdit, setSettingsOnEdit] = useState<SettingsObject>(
@@ -61,9 +63,13 @@ export default function SettingsContainer() {
     }
   }, [settingsOnEdit]);
 
-  const saveSettings = useCallback(() => {
-    settingsModel.updateSettings(settingsOnEdit);
-  }, [settingsModel, settingsOnEdit]);
+  const saveSettings = useCallback(async () => {
+    try {
+      await settingsModel.updateSettings(settingsOnEdit);
+    } catch {
+      notify.error('Error on updating settings object.');
+    }
+  }, [notify, settingsModel, settingsOnEdit]);
 
   return (
     <div className={styles.container}>

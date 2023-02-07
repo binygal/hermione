@@ -44,9 +44,9 @@ export function isSameDay(lh: number, rh: number): boolean {
 
 export function monthEncapsulingDates(
   firstDayOfMonth: number,
-  today: number,
+  currentDay: number,
 ): [start: number, end: number] {
-  const todayAsDate = new Date(today);
+  const todayAsDate = new Date(currentDay);
   const startingMonth = todayAsDate.getDate() < firstDayOfMonth
     ? todayAsDate.getMonth() - 1
     : todayAsDate.getMonth();
