@@ -15,7 +15,7 @@ export default function RecordsLogContainer() {
   const [records, setRecords] = useState<Record[]>([]);
   const loadRecords = useCallback(async () => {
     const allRecords = await recordsModel.getAllRecords();
-    setRecords(allRecords.sort((lh, rh) => lh.startTime - rh.startTime));
+    setRecords(allRecords.sort((lh, rh) => rh.startTime - lh.startTime));
   }, [recordsModel]);
   useEffect(() => {
     loadRecords();
