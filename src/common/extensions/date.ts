@@ -84,3 +84,8 @@ export function convertDateToDateString(date: Date): string {
     date.getMonth().toString().padStart(2, '0')}-${
     date.getDate().toString().padStart(2, '0')}`;
 }
+
+export function today(offset: number = 0) {
+  const currentDay = new Date();
+  return Date.UTC(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate() + offset);
+}
