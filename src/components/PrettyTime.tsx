@@ -10,7 +10,7 @@ export default function PrettyTime(props: PrettyTimeProps) {
   const date = new Date(time);
   const timeElement = (
     <div>
-      {date.getHours()}
+      {date.getUTCHours()}
       :
       {date.getMinutes().toString().padStart(2, '0')}
     </div>
@@ -18,11 +18,11 @@ export default function PrettyTime(props: PrettyTimeProps) {
 
   const dateElement = (
     <div>
-      {date.getDate().toString().padStart(2, '0')}
+      {date.getUTCDate().toString().padStart(2, '0')}
       .
-      {(date.getMonth() + 1).toString().padStart(2, '0')}
+      {(date.getUTCMonth() + 1).toString().padStart(2, '0')}
       .
-      {date.getFullYear()}
+      {date.getUTCFullYear()}
     </div>
   );
 
