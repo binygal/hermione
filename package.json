@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-lint": "tsc -p ./tsconfig.lint.json -w",
-    "test": "jest ./src"
+    "type-lint": "tsc -p ./tsconfig.lint.json",
+    "test": "jest ./src",
+    "test:pre-pr": "npm run type-lint && npm test && npm run lint"
   },
   "dependencies": {
     "@types/node": "18.11.9",
