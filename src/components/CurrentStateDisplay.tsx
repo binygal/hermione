@@ -2,6 +2,8 @@ import Image from 'next/image';
 import workingLogo from './resources/working.svg';
 import coffeeLogo from './resources/coffee.svg';
 
+import type { JSX } from "react";
+
 type CurrentStateDisplayProps = {
   logo: 'working' | 'coffee'
 };

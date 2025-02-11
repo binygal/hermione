@@ -1,5 +1,7 @@
 import styles from './ElapsingTime.module.css';
 
+import type { JSX } from "react";
+
 type ElapsingTimeProps = {
   hours: number;
   minutes: number;

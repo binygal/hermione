@@ -2,8 +2,8 @@ import styles from './Header.module.css';
 
 type HeaderProps = {
   content: string,
-  leftIcon?: React.ReactElement
-  rightIcon?: React.ReactElement
+  leftIcon?: React.ReactElement<any>
+  rightIcon?: React.ReactElement<any>
 };
 
 export default function Header(props: HeaderProps) {
