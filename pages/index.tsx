@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useMemo } from 'react';
+import GAnalytics from '../src/common/analytics/GAnalyticsProvider';
 import Presentor from '../src/common/app/Presentor';
 import MainModelContext, { MainModel } from '../src/common/model/MainModelContext';
 import styles from '../styles/Home.module.css';
@@ -17,6 +18,7 @@ export default function Home() {
         <link rel="manifest" href="/manifest.json" />
       </Head>
       <MainModelContext.Provider value={mainModelContextValue}>
+        <GAnalytics ga_id="G-68HT974F33" />
         <Presentor />
       </MainModelContext.Provider>
     </div>
