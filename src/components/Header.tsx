@@ -13,7 +13,7 @@ export default function Header(props: HeaderProps) {
   return (
     <div className={styles.header}>
       {rightButtonElement}
-      <div className={styles.content}>{content}</div>
+      <div className="text-3xl justify-self-center text-center flex-1">{content}</div>
       {leftButtonElement}
     </div>
   );

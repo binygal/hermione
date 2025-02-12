@@ -1,14 +1,13 @@
 import { v4 } from 'uuid';
 import { IRecordsRepository } from '../../../data/RecordsRepository';
 import { ISettingsRepository } from '../../../settings/SettingsRepository';
-import { MockedInterface } from '../../../test/TestingTypes';
 import { IVacationsRepository } from '../../../vacation-picker/VacationsRepository';
 import RecordsModel, { IRecordsModel } from '../RecordsModel';
 
 describe('Records Model', () => {
-  let repository: MockedInterface<IRecordsRepository>;
-  let settingsRepository: MockedInterface<ISettingsRepository>;
-  let vacationsRepository: MockedInterface<IVacationsRepository>;
+  let repository: jest.Mocked<IRecordsRepository>;
+  let settingsRepository: jest.Mocked<ISettingsRepository>;
+  let vacationsRepository: jest.Mocked<IVacationsRepository>;
   let recordsModel: IRecordsModel;
 
   beforeEach(() => {

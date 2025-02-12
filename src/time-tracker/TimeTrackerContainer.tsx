@@ -1,21 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
-import CurrentStateDisplay from '../components/CurrentStateDisplay';
-import Header from '../components/Header';
-import MainActionButton from '../components/MainActionButton';
 import styles from '../../styles/Home.module.css';
-import ElapsingTime from '../components/ElapsingTime';
-import Message from '../components/Message';
-import useRecordsModel from '../common/model/useRecordsModel';
-import {
-  getTimeDiff, monthEncapsulingDates, TimeDiff, today as getToday,
-} from '../common/extensions/date';
 import useSetCurrentView from '../common/app/useSetCurrentView';
+import {
+  getTimeDiff,
+  today as getToday,
+  monthEncapsulingDates, TimeDiff,
+} from '../common/extensions/date';
+import useRecordsModel from '../common/model/useRecordsModel';
+import useSettingsModel from '../common/model/useSettingsModel';
+import CurrentStateDisplay from '../components/CurrentStateDisplay';
+import ElapsingTime from '../components/ElapsingTime';
+import Header from '../components/Header';
+import MainActionButton, { ButtonType } from '../components/MainActionButton';
+import Message from '../components/Message';
 import SVGButton from '../components/SVGButton';
 import listLogo from '../components/resources/list.svg';
 import settingsLogo from '../components/resources/settings.svg';
-import MonthlySummary from './MonthlySummary';
-import useSettingsModel from '../common/model/useSettingsModel';
 import DailySummary from './DailySummary';
+import MonthlySummary from './MonthlySummary';
 
 export default function TimeTrackerContainer() {
   const recordsModel = useRecordsModel();
@@ -107,7 +109,7 @@ export default function TimeTrackerContainer() {
       <DailySummary time={dailySummary} />
       <MonthlySummary monthlyRecord={monthlySummary} timeToCompletion={missingMonthlyTime} />
       {isWorking ? <ElapsingTime hours={time.hours} minutes={time.minutes} /> : <Message message="Start to see elapsing time" />}
-      <MainActionButton onClick={startNowCallback} title={renderData.title} />
+      <MainActionButton onClick={startNowCallback} title={renderData.title} buttonType={isWorking ? ButtonType.Primary : ButtonType.Success} />
     </div>
   );
 }
