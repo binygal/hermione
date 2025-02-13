@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import LocalDBConnector from '../../data/LocalDBConnector';
 import LocalDBProvider from '../../data/LocalDBProvider';
@@ -45,6 +47,12 @@ export class MainModel implements IMainModel {
   }
 }
 
-export default React.createContext<MainModelContextValue>({
+const MainModelContext = React.createContext<MainModelContextValue>({
   model: new MainModel(),
 });
+
+export default MainModelContext;
+
+export const ModelsProvider = ({children}: React.PropsWithChildren) => <MainModelContext.Provider value={{model: new MainModel()}}>
+  {children}
+</MainModelContext.Provider>;

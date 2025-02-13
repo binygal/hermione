@@ -1,12 +1,14 @@
+'use client'
+
 import React, { useMemo, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import RecordEditorContainer from '../../record-editor/RecordEditorContainer';
 import RecordsLogContainer from '../../records-log/RecordsLogContainer';
 import SettingsContainer from '../../settings/SettingsContainer';
 import TimeTrackerContainer from '../../time-tracker/TimeTrackerContainer';
 import VacationPickerEditor from '../../vacation-picker/VacationPickerEditor';
 import PresentorContext, { ViewNames } from './PresentorContext';
-import 'react-toastify/dist/ReactToastify.css';
 
 function getViewFromName(viewName: ViewNames): React.FunctionComponent | undefined {
   switch (viewName) {
