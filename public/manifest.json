@@ -1,32 +1,32 @@
 {
-    "theme_color": "#f4f635",
-    "background_color": "#f4f635",
-    "display": "standalone",
-    "scope": "/",
-    "start_url": "/",
-    "name": "My work tracker",
-    "short_name": "tracker",
+    "background_color": "#000000",
     "description": "A work tracker to track my time",
+    "display": "standalone",
     "icons": [
         {
-            "src": "/icon-192x192.png",
             "sizes": "192x192",
+            "src": "/icon-192x192.png",
             "type": "image/png"
         },
         {
-            "src": "/icon-256x256.png",
             "sizes": "256x256",
+            "src": "/icon-256x256.png",
             "type": "image/png"
         },
         {
-            "src": "/icon-384x384.png",
             "sizes": "384x384",
+            "src": "/icon-384x384.png",
             "type": "image/png"
         },
         {
-            "src": "/icon-512x512.png",
             "sizes": "512x512",
+            "src": "/icon-512x512.png",
             "type": "image/png"
         }
-    ]
+    ],
+    "name": "My work tracker",
+    "scope": "/",
+    "short_name": "tracker",
+    "start_url": "/",
+    "theme_color": "#000000"
 }

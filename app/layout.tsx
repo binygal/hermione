@@ -1,11 +1,13 @@
 import { Metadata } from "next";
 import React from "react";
 import GAnalytics from "../src/common/analytics/GAnalyticsProvider";
+import colors from "../src/common/colors";
 import { ModelsProvider } from "../src/common/model/MainModelContext";
 
 export const metadata: Metadata = {
   title: "Time tracker",
   description: "App to track my time at work",
+  themeColor: colors.black,
   openGraph: {
     title: "My Portfolio",
     description: "This is my portfolio.",
