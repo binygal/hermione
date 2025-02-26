@@ -7,6 +7,9 @@ import { ModelsProvider } from "../src/common/model/MainModelContext";
 export const metadata: Metadata = {
   title: "Time tracker",
   description: "App to track my time at work",
+  appleWebApp: {
+    statusBarStyle: 'black-translucent',
+  }, 
   themeColor: colors.black,
   openGraph: {
     title: "My Portfolio",
