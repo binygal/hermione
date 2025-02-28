@@ -1,30 +1,32 @@
-'use client';
+"use client";
 
-import React, { useMemo, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import RecordEditorContainer from '../../record-editor/RecordEditorContainer';
-import RecordsLogContainer from '../../records-log/RecordsLogContainer';
-import SettingsContainer from '../../settings/SettingsContainer';
-import TimeTrackerContainer from '../../time-tracker/TimeTrackerContainer';
-import VacationPickerEditor from '../../vacation-picker/VacationPickerEditor';
-import PresentorContext, { ViewNames } from './PresentorContext';
+import dynamic from "next/dynamic";
+import React, { useMemo, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import RecordsLogContainer from "../../records-log/RecordsLogContainer";
+import SettingsContainer from "../../settings/SettingsContainer";
+import TimeTrackerContainer from "../../time-tracker/TimeTrackerContainer";
+import VacationPickerEditor from "../../vacation-picker/VacationPickerEditor";
+import PresentorContext, { ViewNames } from "./PresentorContext";
 
-function getViewFromName(viewName: ViewNames): React.FunctionComponent | undefined {
+const RecordEditorContainer = dynamic(() => import("../../record-editor/RecordEditorContainer"));
+
+function getViewFromName(viewName: ViewNames): React.ElementType | undefined {
   switch (viewName) {
-    case 'main': {
+    case "main": {
       return TimeTrackerContainer;
     }
-    case 'logs-container': {
+    case "logs-container": {
       return RecordsLogContainer;
     }
-    case 'record-editor': {
+    case "record-editor": {
       return RecordEditorContainer;
     }
-    case 'settings': {
+    case "settings": {
       return SettingsContainer;
     }
-    case 'vacation-picker': {
+    case "vacation-picker": {
       return VacationPickerEditor;
     }
     default: {
@@ -34,16 +36,18 @@ function getViewFromName(viewName: ViewNames): React.FunctionComponent | undefin
 }
 
 export default function Presentor() {
-  const [currentView, setCurrentView] = useState<ViewNames>('main');
+  const [currentView, setCurrentView] = useState<ViewNames>("main");
   const [currentProps, setCurrentProps] = useState<Record<string, string>>({});
-  const presentorContextValue = useMemo(() => ({
-    setCurrentView: (viewName: ViewNames, props: Record<string, string> = {}) => {
-      setCurrentView(viewName);
-      setCurrentProps(props);
-    },
-    notify: toast,
-  }
-  ), [setCurrentView]);
+  const presentorContextValue = useMemo(
+    () => ({
+      setCurrentView: (viewName: ViewNames, props: Record<string, string> = {}) => {
+        setCurrentView(viewName);
+        setCurrentProps(props);
+      },
+      notify: toast,
+    }),
+    [setCurrentView]
+  );
   const viewToRender = getViewFromName(currentView);
   if (!viewToRender) {
     return null;
@@ -51,7 +55,7 @@ export default function Presentor() {
 
   return (
     <PresentorContext.Provider value={presentorContextValue}>
-      {React.createElement(viewToRender, currentProps) }
+      {React.createElement(viewToRender, currentProps)}
       <ToastContainer />
     </PresentorContext.Provider>
   );
