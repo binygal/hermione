@@ -76,27 +76,27 @@ export default function DateTimePicker(props: DateTimePickerProps) {
             <path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
           </svg>
           <calendar-month></calendar-month>
-          <input
-            type="time"
-            id="time"
-            className={timePickerClassNames}
-            value={`${String(value?.getHours() ?? 0).padStart(2, "0")}:${String(value?.getMinutes() ?? 0).padStart(
-              2,
-              "0"
-            )}`}
-            required
-            onChange={(e) => {
-              const [hours, minutes] = e.target.value
-                .split(":")
-                .map(Number)
-                .map((number) => (Number.isFinite(number) ? number : 0));
-              const date = new Date(value || Date.now());
-              date.setHours(hours);
-              date.setMinutes(minutes);
-              onDateChange(date);
-            }}
-          />
         </calendar-date>
+        <input
+          type="time"
+          id="time"
+          className={timePickerClassNames}
+          value={`${String(value?.getHours() ?? 0).padStart(2, "0")}:${String(value?.getMinutes() ?? 0).padStart(
+            2,
+            "0"
+          )}`}
+          required
+          onChange={(e) => {
+            const [hours, minutes] = e.target.value
+              .split(":")
+              .map(Number)
+              .map((number) => (Number.isFinite(number) ? number : 0));
+            const date = new Date(value || Date.now());
+            date.setHours(hours);
+            date.setMinutes(minutes);
+            onDateChange(date);
+          }}
+        />
       </Popup>
     </div>
   );
