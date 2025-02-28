@@ -1,25 +1,21 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useState } from 'react';
-import styles from '../../styles/Home.module.css';
-import useSetCurrentView from '../common/app/useSetCurrentView';
-import {
-  getTimeDiff,
-  today as getToday,
-  monthEncapsulingDates, TimeDiff,
-} from '../common/extensions/date';
-import useRecordsModel from '../common/model/useRecordsModel';
-import useSettingsModel from '../common/model/useSettingsModel';
-import CurrentStateDisplay from '../components/CurrentStateDisplay';
-import ElapsingTime from '../components/ElapsingTime';
-import Header from '../components/Header';
-import MainActionButton, { ButtonType } from '../components/MainActionButton';
-import Message from '../components/Message';
-import SVGButton from '../components/SVGButton';
-import listLogo from '../components/resources/list.svg';
-import settingsLogo from '../components/resources/settings.svg';
-import DailySummary from './DailySummary';
-import MonthlySummary from './MonthlySummary';
+import { useCallback, useEffect, useState } from "react";
+import styles from "../../styles/Home.module.css";
+import useSetCurrentView from "../common/app/useSetCurrentView";
+import { getTimeDiff, today as getToday, monthEncapsulingDates, TimeDiff } from "../common/extensions/date";
+import useRecordsModel from "../common/model/useRecordsModel";
+import useSettingsModel from "../common/model/useSettingsModel";
+import CurrentStateDisplay from "../components/CurrentStateDisplay";
+import ElapsingTime from "../components/ElapsingTime";
+import Header from "../components/Header";
+import MainActionButton, { ButtonType } from "../components/MainActionButton";
+import Message from "../components/Message";
+import SVGButton from "../components/SVGButton";
+import listLogo from "../components/resources/list.svg";
+import settingsLogo from "../components/resources/settings.svg";
+import DailySummary from "./DailySummary";
+import MonthlySummary from "./MonthlySummary";
 
 export default function TimeTrackerContainer() {
   const recordsModel = useRecordsModel();
@@ -30,36 +26,26 @@ export default function TimeTrackerContainer() {
   const [dailySummary, setDailySummary] = useState({ hours: 0, minutes: 0 });
   const [missingMonthlyTime, setMissingMonthlyTime] = useState({ hours: 0, minutes: 0 });
   const renderData = {
-    logo: isWorking ? 'working' : 'coffee' as 'working' | 'coffee',
-    title: isWorking ? 'stop' : 'start',
+    logo: isWorking ? "working" : ("coffee" as "working" | "coffee"),
+    title: isWorking ? "stop" : "start",
   };
 
   const updateMonthlySummary = useCallback(async () => {
     const settings = await settingsModel.get();
 
     const today = new Date();
-    const [firstMonthDay, lastMonthDay] = monthEncapsulingDates(
-      settings.firstDayOfMonth,
-      today.getTime(),
-    );
-    const monthlyData = await recordsModel
-      .getTotalRecordsTimeBetweenDates(firstMonthDay, lastMonthDay);
+    const [firstMonthDay, lastMonthDay] = monthEncapsulingDates(settings.firstDayOfMonth, today.getTime());
+    const monthlyData = await recordsModel.getTotalRecordsTimeBetweenDates(firstMonthDay, lastMonthDay);
     setMonthlySummary(monthlyData);
     const expectedHours = await recordsModel.expectedHoursPerMonth();
 
     const missingMinutes = monthlyData.minutes === 0 ? 0 : 60 - monthlyData.minutes;
-    const missingHours = Math.max(
-      0,
-      expectedHours - monthlyData.hours - (missingMinutes === 0 ? 0 : 1),
-    );
+    const missingHours = Math.max(0, expectedHours - monthlyData.hours - (missingMinutes === 0 ? 0 : 1));
     setMissingMonthlyTime({ hours: missingHours, minutes: missingMinutes });
   }, [recordsModel, settingsModel]);
 
   const updateDailySummary = useCallback(async () => {
-    const dailyData = await recordsModel.getTotalRecordsTimeBetweenDates(
-      getToday(),
-      getToday(1),
-    );
+    const dailyData = await recordsModel.getTotalRecordsTimeBetweenDates(getToday(), getToday(1));
     setDailySummary(dailyData);
   }, [recordsModel]);
 
@@ -87,14 +73,11 @@ export default function TimeTrackerContainer() {
     };
   }, [recordsModel.currentOnGoingRecord, updateDailySummary, updateMonthlySummary]);
 
-  const startNowCallback = useCallback(
-    async () => {
-      await recordsModel.createOrSealRecord();
-      const currentRecord = await recordsModel.currentOnGoingRecord;
-      setIsWorking(currentRecord != null);
-    },
-    [recordsModel, setIsWorking],
-  );
+  const startNowCallback = useCallback(async () => {
+    await recordsModel.createOrSealRecord();
+    const currentRecord = await recordsModel.currentOnGoingRecord;
+    setIsWorking(currentRecord != null);
+  }, [recordsModel, setIsWorking]);
 
   const setCurrentView = useSetCurrentView();
 
@@ -102,16 +85,24 @@ export default function TimeTrackerContainer() {
     <div className={styles.content}>
       <Header
         content="Time tracking"
-        leftIcon={<SVGButton onClick={() => setCurrentView('logs-container')} svg={listLogo} />}
-        rightIcon={<SVGButton onClick={() => setCurrentView('settings')} svg={settingsLogo} />}
+        leftIcon={<SVGButton onClick={() => setCurrentView("logs-container")} svg={listLogo} />}
+        rightIcon={<SVGButton onClick={() => setCurrentView("settings")} svg={settingsLogo} />}
       />
       <div className={styles.containerItem}>
         <CurrentStateDisplay logo={renderData.logo} />
       </div>
       <DailySummary time={dailySummary} />
       <MonthlySummary monthlyRecord={monthlySummary} timeToCompletion={missingMonthlyTime} />
-      {isWorking ? <ElapsingTime hours={time.hours} minutes={time.minutes} /> : <Message message="Start to see elapsing time" />}
-      <MainActionButton onClick={startNowCallback} title={renderData.title} buttonType={isWorking ? ButtonType.Primary : ButtonType.Success} />
+      {isWorking ? (
+        <ElapsingTime hours={time.hours} minutes={time.minutes} />
+      ) : (
+        <Message message="Start to see elapsing time" />
+      )}
+      <MainActionButton
+        onClick={startNowCallback}
+        title={renderData.title}
+        buttonType={isWorking ? ButtonType.Primary : ButtonType.Success}
+      />
     </div>
   );
 }

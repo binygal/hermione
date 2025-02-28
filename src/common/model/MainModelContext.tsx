@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import React from 'react';
-import LocalDBConnector from '../../data/LocalDBConnector';
-import LocalDBProvider from '../../data/LocalDBProvider';
-import RecordsRepository from '../../data/RecordsRepository';
-import SettingsModel, { ISettingsModel } from '../../settings/SettingsModel';
-import SettingsRepository from '../../settings/SettingsRepository';
-import VacationsModel, { IVacationsModel } from '../../vacation-picker/VacationsModel';
-import VacationsRepository from '../../vacation-picker/VacationsRepository';
-import RecordsModel, { IRecordsModel } from './RecordsModel';
+import React from "react";
+import LocalDBConnector from "../../data/LocalDBConnector";
+import LocalDBProvider from "../../data/LocalDBProvider";
+import RecordsRepository from "../../data/RecordsRepository";
+import SettingsModel, { ISettingsModel } from "../../settings/SettingsModel";
+import SettingsRepository from "../../settings/SettingsRepository";
+import VacationsModel, { IVacationsModel } from "../../vacation-picker/VacationsModel";
+import VacationsRepository from "../../vacation-picker/VacationsRepository";
+import RecordsModel, { IRecordsModel } from "./RecordsModel";
 
 export interface IMainModel {
   readonly recordsModel: IRecordsModel;
   readonly settingsModel: ISettingsModel;
-  readonly vacationsModel: IVacationsModel
+  readonly vacationsModel: IVacationsModel;
 }
 
 export type MainModelContextValue = {
-  model: IMainModel
+  model: IMainModel;
 };
 
 export class MainModel implements IMainModel {
@@ -38,7 +38,7 @@ export class MainModel implements IMainModel {
       recordsRepository,
       settingsRepository,
 
-      vacationsRepository,
+      vacationsRepository
     );
 
     this.settingsModel = new SettingsModel(settingsRepository);
@@ -53,6 +53,6 @@ const MainModelContext = React.createContext<MainModelContextValue>({
 
 export default MainModelContext;
 
-export const ModelsProvider = ({ children }: React.PropsWithChildren) => <MainModelContext.Provider value={{ model: new MainModel() }}>
-  {children}
-</MainModelContext.Provider>;
+export const ModelsProvider = ({ children }: React.PropsWithChildren) => (
+  <MainModelContext.Provider value={{ model: new MainModel() }}>{children}</MainModelContext.Provider>
+);
