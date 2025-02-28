@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 import LocalDBConnector from '../../data/LocalDBConnector';
@@ -53,6 +53,6 @@ const MainModelContext = React.createContext<MainModelContextValue>({
 
 export default MainModelContext;
 
-export const ModelsProvider = ({children}: React.PropsWithChildren) => <MainModelContext.Provider value={{model: new MainModel()}}>
+export const ModelsProvider = ({ children }: React.PropsWithChildren) => <MainModelContext.Provider value={{ model: new MainModel() }}>
   {children}
 </MainModelContext.Provider>;

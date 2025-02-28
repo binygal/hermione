@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useCallback, useEffect, useState } from 'react';
 import styles from '../../styles/Home.module.css';

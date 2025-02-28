@@ -21,35 +21,19 @@ export function convertDateToInputString(date: Date): string {
   return date.toISOString().substring(0, date.toISOString().length - 1);
 }
 
-export function convertInputStringToTimestamp(inputString: string): number {
-  const timestampPattern = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
-  const inputParts = inputString.match(timestampPattern);
-  const [,year, month, day, hour, minutes] = inputParts ?? [];
-  return Date.UTC(
-    Number.parseInt(year, 10),
-    Number.parseInt(month, 10) - 1,
-    Number.parseInt(day, 10),
-    Number.parseInt(hour, 10),
-    Number.parseInt(minutes, 10),
-  );
-}
-
 export function isSameDay(lh: number, rh: number): boolean {
   const firstDate = new Date(lh);
   const secondDate = new Date(rh);
-  return firstDate.getDay() === secondDate.getDay()
-  && firstDate.getMonth() === secondDate.getMonth()
-  && firstDate.getFullYear() === secondDate.getFullYear();
+  return (
+    firstDate.getDay() === secondDate.getDay() &&
+    firstDate.getMonth() === secondDate.getMonth() &&
+    firstDate.getFullYear() === secondDate.getFullYear()
+  );
 }
 
-export function monthEncapsulingDates(
-  firstDayOfMonth: number,
-  currentDay: number,
-): [start: number, end: number] {
+export function monthEncapsulingDates(firstDayOfMonth: number, currentDay: number): [start: number, end: number] {
   const todayAsDate = new Date(currentDay);
-  const startingMonth = todayAsDate.getDate() < firstDayOfMonth
-    ? todayAsDate.getMonth() - 1
-    : todayAsDate.getMonth();
+  const startingMonth = todayAsDate.getDate() < firstDayOfMonth ? todayAsDate.getMonth() - 1 : todayAsDate.getMonth();
   const firstDay = Date.UTC(todayAsDate.getFullYear(), startingMonth, firstDayOfMonth);
   const lastDay = Date.UTC(todayAsDate.getFullYear(), startingMonth + 1, firstDayOfMonth);
   return [firstDay, lastDay];
@@ -80,9 +64,10 @@ export function numberOfWorkingDaysInMonth(date: number, firstDayOfMonth: number
 }
 
 export function convertDateToDateString(date: Date): string {
-  return `${date.getFullYear()}-${
-    date.getMonth().toString().padStart(2, '0')}-${
-    date.getDate().toString().padStart(2, '0')}`;
+  return `${date.getFullYear()}-${date.getMonth().toString().padStart(2, "0")}-${date
+    .getDate()
+    .toString()
+    .padStart(2, "0")}`;
 }
 
 export function today(offset: number = 0) {

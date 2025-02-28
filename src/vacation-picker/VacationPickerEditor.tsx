@@ -1,15 +1,15 @@
+import { useCallback, useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { useCallback, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
-import styles from './VacationPickerEditor.module.css';
 import useSetCurrentView from '../common/app/useSetCurrentView';
+import { convertDateToDateString } from '../common/extensions/date';
+import useVacationsModel from '../common/model/useVacationsModel';
 import Header from '../components/Header';
 import SVGButton from '../components/SVGButton';
 import closeLogo from '../components/resources/close-circle.svg';
-import useVacationsModel from '../common/model/useVacationsModel';
+import styles from './VacationPickerEditor.module.css';
 import { StringifiedVacation } from './VacationsModel';
-import { convertDateToDateString } from '../common/extensions/date';
 
 export default function VacationPickerEditor() {
   const vacationsModel = useVacationsModel();
@@ -53,8 +53,8 @@ export default function VacationPickerEditor() {
         value={undefined}
         onClickDay={saveVacation}
         tileClassName={
-           (d) => (vacationDates.some((vacation) => vacation.vacation === convertDateToDateString(d.date)) ? styles.vacation : '')
-}
+          (d) => (vacationDates.some((vacation) => vacation.vacation === convertDateToDateString(d.date)) ? styles.vacation : '')
+        }
       />
     </div>
   );

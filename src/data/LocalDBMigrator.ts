@@ -1,6 +1,5 @@
 import { SettingsObject } from './data.types';
 
-/* eslint-disable @typescript-eslint/naming-convention */
 type MigrationFunction = (db:IDBDatabase) => Promise<void>;
 
 export interface IDBMigrator {

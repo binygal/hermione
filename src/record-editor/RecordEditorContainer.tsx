@@ -1,26 +1,31 @@
-import {
-  useCallback, useState, ChangeEvent, useEffect,
-} from 'react';
-import { v4 } from 'uuid';
-import useNotify from '../common/app/useNotify';
-import useSetCurrentView from '../common/app/useSetCurrentView';
-import { convertDateToInputString, convertInputStringToTimestamp } from '../common/extensions/date';
-import useRecordsModel from '../common/model/useRecordsModel';
-import Header from '../components/Header';
-import MainActionButton from '../components/MainActionButton';
-import closeLogo from '../components/resources/close-circle.svg';
-import SVGButton from '../components/SVGButton';
-import { Record } from '../data/data.types';
-import styles from './RecordEditorContainer.module.css';
+import { useCallback, useEffect, useState } from "react";
+import { v4 } from "uuid";
+import useNotify from "../common/app/useNotify";
+import useSetCurrentView from "../common/app/useSetCurrentView";
+import DateTimePicker from "../common/components/DateTimePicker";
+import useRecordsModel from "../common/model/useRecordsModel";
+import Header from "../components/Header";
+import MainActionButton from "../components/MainActionButton";
+import closeLogo from "../components/resources/close-circle.svg";
+import SVGButton from "../components/SVGButton";
+import { Record } from "../data/data.types";
+import styles from "./RecordEditorContainer.module.css";
 
 type RecordEditorContainerProps = {
-  id?: string
+  id?: string;
 };
 
 function createTemplateRecord(): Record {
   const currentDate = Date.now();
   const flooredToMinutesDate = currentDate - (currentDate % 60000);
   return { id: v4(), startTime: flooredToMinutesDate, endTime: flooredToMinutesDate };
+}
+
+function dateFormatter(date: Date): string {
+  return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}/${date.getFullYear()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
 
 export default function RecordEditorContainer(props: RecordEditorContainerProps) {
@@ -30,6 +35,8 @@ export default function RecordEditorContainer(props: RecordEditorContainerProps)
   const [recordOnEdit, setRecordOnEdit] = useState(createTemplateRecord());
   const recordsModel = useRecordsModel();
 
+  const startDate = new Date(recordOnEdit.startTime);
+  const endDate = recordOnEdit.endTime ? new Date(recordOnEdit.endTime) : undefined;
   useEffect(() => {
     const loadRecord = async () => {
       if (id) {
@@ -40,27 +47,6 @@ export default function RecordEditorContainer(props: RecordEditorContainerProps)
     loadRecord();
   }, [id, recordsModel]);
 
-  const startDate = new Date(recordOnEdit.startTime);
-  const endDate = recordOnEdit.endTime ? new Date(recordOnEdit.endTime) : '';
-  const updateStartTimeOnRecord = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.value) {
-        return;
-      }
-      const updatedTime = convertInputStringToTimestamp(e.target.value);
-      setRecordOnEdit({ ...recordOnEdit, startTime: updatedTime });
-    },
-    [recordOnEdit],
-  );
-
-  const updateEndTimeOnRecord = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const updatedTime = convertInputStringToTimestamp(e.target.value);
-      setRecordOnEdit({ ...recordOnEdit, endTime: updatedTime });
-    },
-    [recordOnEdit],
-  );
-
   const saveRecord = useCallback(async () => {
     try {
       if (id) {
@@ -68,9 +54,9 @@ export default function RecordEditorContainer(props: RecordEditorContainerProps)
       } else {
         await recordsModel.createRecord(recordOnEdit);
       }
-      setCurrentView('logs-container');
+      setCurrentView("logs-container");
     } catch {
-      notify.error('Error on storing record');
+      notify.error("Error on storing record");
     }
   }, [id, notify, recordOnEdit, recordsModel, setCurrentView]);
 
@@ -78,18 +64,21 @@ export default function RecordEditorContainer(props: RecordEditorContainerProps)
     <div className={styles.container}>
       <Header
         content="Add record"
-        rightIcon={(
-          <SVGButton
-            onClick={() => setCurrentView('logs-container')}
-            svg={closeLogo}
-          />
-)}
+        rightIcon={<SVGButton onClick={() => setCurrentView("logs-container")} svg={closeLogo} />}
       />
       <div className={styles.inputContainer}>
         <span>Start time</span>
-        <input type="datetime-local" required value={convertDateToInputString(startDate)} onChange={updateStartTimeOnRecord} />
+        <DateTimePicker
+          value={startDate}
+          onDateChange={(date) => setRecordOnEdit((record) => ({ ...record, startTime: date.getTime() }))}
+          dateFormatter={dateFormatter}
+        />
         <span>End time</span>
-        <input type="datetime-local" value={endDate && convertDateToInputString(endDate)} onChange={updateEndTimeOnRecord} />
+        <DateTimePicker
+          value={endDate}
+          onDateChange={(date) => setRecordOnEdit((record) => ({ ...record, endTime: date.getTime() }))}
+          dateFormatter={dateFormatter}
+        />
       </div>
       <MainActionButton title="Save" onClick={saveRecord} />
     </div>
