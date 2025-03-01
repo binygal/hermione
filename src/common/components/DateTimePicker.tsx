@@ -3,17 +3,13 @@ import { CalendarDate } from "cally";
 import { RefObject, useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 import Popup from "./Popup";
+import { TimePicker } from "./TimePicker";
 
 type DateTimePickerProps = {
   onDateChange: (date: Date) => void;
   value?: Date;
   dateFormatter?: (date: Date) => string;
 };
-
-const timePickerClassNames =
-  "bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 " +
-  "focus:border-blue-500 block w-xs p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 " +
-  "dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
 
 /**
  * parses ISO-8601 date string to a Date object
@@ -77,25 +73,14 @@ export default function DateTimePicker(props: DateTimePickerProps) {
           </svg>
           <calendar-month></calendar-month>
         </calendar-date>
-        <input
-          type="time"
-          id="time"
-          className={timePickerClassNames}
-          value={`${String(value?.getHours() ?? 0).padStart(2, "0")}:${String(value?.getMinutes() ?? 0).padStart(
-            2,
-            "0"
-          )}`}
-          required
-          onChange={(e) => {
-            const [hours, minutes] = e.target.value
-              .split(":")
-              .map(Number)
-              .map((number) => (Number.isFinite(number) ? number : 0));
-            const date = new Date(value || Date.now());
-            date.setHours(hours);
-            date.setMinutes(minutes);
-            onDateChange(date);
+        <TimePicker
+          onTimeChanged={(time) => {
+            const clonedDate = new Date(value || Date.now());
+            clonedDate.setHours(time.hours);
+            clonedDate.setMinutes(time.minutes);
+            onDateChange(clonedDate);
           }}
+          value={{ hours: value?.getHours() ?? 9, minutes: value?.getMinutes() ?? 0 }}
         />
       </Popup>
     </div>
