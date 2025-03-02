@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   title: "Time tracker",
   description: "App to track my time at work",
   appleWebApp: {
-    statusBarStyle: 'black-translucent',
-  }, 
+    statusBarStyle: "black-translucent",
+  },
   themeColor: colors.black,
   openGraph: {
     title: "My Portfolio",
@@ -31,7 +31,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function Layout(props: React.PropsWithChildren) {
   return (
     <html lang="en">
@@ -39,6 +38,7 @@ export default function Layout(props: React.PropsWithChildren) {
         <ModelsProvider>
           <GAnalytics ga_id="G-68HT974F33" />
           {props.children}
+          <dialog id="modal" className="modal"></dialog>
         </ModelsProvider>
       </body>
     </html>
