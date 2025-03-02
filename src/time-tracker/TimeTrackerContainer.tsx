@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { v4 } from "uuid";
 import styles from "../../styles/Home.module.css";
 import useSetCurrentView from "../common/app/useSetCurrentView";
+import { showModal } from "../common/components/showModal";
 import { getTimeDiff, today as getToday, monthEncapsulingDates, TimeDiff } from "../common/extensions/date";
 import useRecordsModel from "../common/model/useRecordsModel";
 import useSettingsModel from "../common/model/useSettingsModel";
@@ -16,6 +18,7 @@ import listLogo from "../components/resources/list.svg";
 import settingsLogo from "../components/resources/settings.svg";
 import DailySummary from "./DailySummary";
 import MonthlySummary from "./MonthlySummary";
+import PickStartTime from "./PickStartTime";
 
 export default function TimeTrackerContainer() {
   const recordsModel = useRecordsModel();
@@ -79,6 +82,15 @@ export default function TimeTrackerContainer() {
     setIsWorking(currentRecord != null);
   }, [recordsModel, setIsWorking]);
 
+  const createNewRecord = useCallback(
+    async (startTime: Date) => {
+      await recordsModel.createRecord({ id: v4(), startTime: startTime.getTime() });
+      const currentRecord = await recordsModel.currentOnGoingRecord;
+      setIsWorking(currentRecord != null);
+    },
+    [recordsModel, setIsWorking]
+  );
+
   const setCurrentView = useSetCurrentView();
 
   return (
@@ -103,6 +115,23 @@ export default function TimeTrackerContainer() {
         title={renderData.title}
         buttonType={isWorking ? ButtonType.Primary : ButtonType.Success}
       />
+      {!isWorking && (
+        <MainActionButton
+          onClick={() => {
+            showModal({
+              children: (onCloseRequest) => (
+                <PickStartTime
+                  onStartTimePicked={(date) => {
+                    createNewRecord(date);
+                    onCloseRequest();
+                  }}
+                />
+              ),
+            });
+          }}
+          title="I've started before"
+        />
+      )}
     </div>
   );
 }

@@ -74,3 +74,10 @@ export function today(offset: number = 0) {
   const currentDay = new Date();
   return Date.UTC(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate() + offset);
 }
+
+export function dateFormatter(date: Date): string {
+  return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}/${date.getFullYear()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+}

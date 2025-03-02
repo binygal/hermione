@@ -3,6 +3,7 @@ import { v4 } from "uuid";
 import useNotify from "../common/app/useNotify";
 import useSetCurrentView from "../common/app/useSetCurrentView";
 import DateTimePicker from "../common/components/DateTimePicker";
+import { dateFormatter } from "../common/extensions/date";
 import useRecordsModel from "../common/model/useRecordsModel";
 import Header from "../components/Header";
 import MainActionButton from "../components/MainActionButton";
@@ -19,13 +20,6 @@ function createTemplateRecord(): Record {
   const currentDate = Date.now();
   const flooredToMinutesDate = currentDate - (currentDate % 60000);
   return { id: v4(), startTime: flooredToMinutesDate, endTime: flooredToMinutesDate };
-}
-
-function dateFormatter(date: Date): string {
-  return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}/${date.getFullYear()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
 
 export default function RecordEditorContainer(props: RecordEditorContainerProps) {
