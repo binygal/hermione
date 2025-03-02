@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import styles from "../../styles/Home.module.css";
@@ -18,7 +19,8 @@ import listLogo from "../components/resources/list.svg";
 import settingsLogo from "../components/resources/settings.svg";
 import DailySummary from "./DailySummary";
 import MonthlySummary from "./MonthlySummary";
-import PickStartTime from "./PickStartTime";
+
+const PickStartTime = dynamic(() => import("./PickStartTime"));
 
 export default function TimeTrackerContainer() {
   const recordsModel = useRecordsModel();
