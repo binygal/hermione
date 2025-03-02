@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import React from "react";
 import GAnalytics from "../src/common/analytics/GAnalyticsProvider";
 import colors from "../src/common/colors";
@@ -29,6 +29,14 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: colors.black,
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function Layout(props: React.PropsWithChildren) {
