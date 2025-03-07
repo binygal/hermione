@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
-import useSetCurrentView from '../common/app/useSetCurrentView';
-import Header from '../components/Header';
-import SVGButton from '../components/SVGButton';
-import useRecordsModel from '../common/model/useRecordsModel';
-import RecordEntry from './RecordEntry';
-import { Record } from '../data/data.types';
-import MainActionButton from '../components/MainActionButton';
-import styles from './RecordsLogContainer.module.css';
-import listLogo from '../components/resources/back-arrow.svg';
+import { useCallback, useEffect, useState } from "react";
+import useSetCurrentView from "../common/app/useSetCurrentView";
+import useRecordsModel from "../common/model/useRecordsModel";
+import Header from "../components/Header";
+import MainActionButton from "../components/MainActionButton";
+import listLogo from "../components/resources/back-arrow.svg";
+import SVGButton from "../components/SVGButton";
+import { Record } from "../data/data.types";
+import RecordEntry from "./RecordEntry";
+import styles from "./RecordsLogContainer.module.css";
 
 export default function RecordsLogContainer() {
   const setCurrentView = useSetCurrentView();
@@ -24,23 +24,30 @@ export default function RecordsLogContainer() {
     <RecordEntry
       record={r}
       key={r.id}
-      onEditClicked={() => setCurrentView('record-editor', { id: r.id })}
+      onEditClicked={() => setCurrentView("record-editor", { id: r.id })}
       onDeleteClicked={() => {
         recordsModel.deleteRecord(r.id);
         loadRecords();
       }}
     />
   ));
+  if (records.length === 0) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="loading loading-dots loading-xl" />
+      </div>
+    );
+  }
   return (
     <div className={styles.container}>
-      <Header
-        content="Records log"
-        rightIcon={<SVGButton onClick={() => setCurrentView('main')} svg={listLogo} />}
+      <Header content="Records log" rightIcon={<SVGButton onClick={() => setCurrentView("main")} svg={listLogo} />} />
+      <div className={styles.entriesContainer}>{recordsToRender}</div>
+      <MainActionButton
+        title="Add new"
+        onClick={() => {
+          setCurrentView("record-editor");
+        }}
       />
-      <div className={styles.entriesContainer}>
-        {recordsToRender}
-      </div>
-      <MainActionButton title="Add new" onClick={() => { setCurrentView('record-editor'); }} />
     </div>
   );
 }
