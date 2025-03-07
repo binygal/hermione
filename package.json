@@ -9,7 +9,7 @@
     "lint": "next lint",
     "type-lint": "tsc -p ./tsconfig.lint.json",
     "test": "jest ./src",
-    "test:pre-pr": "npm run type-lint && npm test && npm run lint"
+    "test:pre-pr": "npm run type-lint && npm test && npm run lint && npm run build"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.6",

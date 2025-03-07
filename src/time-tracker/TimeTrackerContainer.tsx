@@ -119,6 +119,7 @@ export default function TimeTrackerContainer() {
       />
       {!isWorking && (
         <MainActionButton
+          className="mb-3"
           onClick={() => {
             showModal({
               children: (onCloseRequest) => (

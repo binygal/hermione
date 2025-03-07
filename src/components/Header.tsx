@@ -1,9 +1,9 @@
-import styles from './Header.module.css';
+import styles from "./Header.module.css";
 
 type HeaderProps = {
-  content: string,
-  leftIcon?: React.ReactElement<any>
-  rightIcon?: React.ReactElement<any>
+  content: string;
+  leftIcon?: React.ReactElement<any>;
+  rightIcon?: React.ReactElement<any>;
 };
 
 export default function Header(props: HeaderProps) {
@@ -13,7 +13,7 @@ export default function Header(props: HeaderProps) {
   return (
     <div className={styles.header}>
       {rightButtonElement}
-      <div className="text-3xl justify-self-center text-center flex-1">{content}</div>
+      <div className="text-3xl justify-self-center text-center flex-1 m-2">{content}</div>
       {leftButtonElement}
     </div>
   );
