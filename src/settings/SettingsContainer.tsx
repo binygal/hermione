@@ -1,11 +1,12 @@
+import Image from "next/image";
 import { ChangeEvent, FocusEvent, useCallback, useEffect, useState } from "react";
 import useNotify from "../common/app/useNotify";
 import useSetCurrentView from "../common/app/useSetCurrentView";
+import { DRAWER_ID } from "../common/components/Drawer/DrawerConstants";
 import useSettingsModel from "../common/model/useSettingsModel";
 import Header from "../components/Header";
 import MainActionButton from "../components/MainActionButton";
 import closeLogo from "../components/resources/close-circle.svg";
-import SVGButton from "../components/SVGButton";
 import { SettingsObject } from "../data/data.types";
 import styles from "./SettingsContainer.module.css";
 
@@ -86,7 +87,14 @@ export default function SettingsContainer() {
   return (
     <div className={styles.container}>
       <div className={styles.formBody}>
-        <Header content="Settings" rightIcon={<SVGButton svg={closeLogo} onClick={() => setCurrentView("main")} />} />
+        <Header
+          content="Settings"
+          rightIcon={
+            <label htmlFor={DRAWER_ID} className="drawer-button">
+              <Image src={closeLogo.src} alt="close button" width={30} height={30} />
+            </label>
+          }
+        />
         First day of the month
         <input
           type="number"

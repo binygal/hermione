@@ -5,7 +5,6 @@ import React, { useMemo, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RecordsLogContainer from "../../records-log/RecordsLogContainer";
-import SettingsContainer from "../../settings/SettingsContainer";
 import TimeTrackerContainer from "../../time-tracker/TimeTrackerContainer";
 import VacationPickerEditor from "../../vacation-picker/VacationPickerEditor";
 import PresentorContext, { ViewNames } from "./PresentorContext";
@@ -22,9 +21,6 @@ function getViewFromName(viewName: ViewNames): React.ElementType | undefined {
     }
     case "record-editor": {
       return RecordEditorContainer;
-    }
-    case "settings": {
-      return SettingsContainer;
     }
     case "vacation-picker": {
       return VacationPickerEditor;
