@@ -1,10 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import styles from "../../styles/Home.module.css";
 import useSetCurrentView from "../common/app/useSetCurrentView";
+import { DRAWER_ID } from "../common/components/Drawer/DrawerConstants";
 import { showModal } from "../common/components/showModal";
 import { getTimeDiff, today as getToday, monthEncapsulingDates, TimeDiff } from "../common/extensions/date";
 import useRecordsModel from "../common/model/useRecordsModel";
@@ -100,7 +102,11 @@ export default function TimeTrackerContainer() {
       <Header
         content="Time tracking"
         leftIcon={<SVGButton onClick={() => setCurrentView("logs-container")} svg={listLogo} />}
-        rightIcon={<SVGButton onClick={() => setCurrentView("settings")} svg={settingsLogo} />}
+        rightIcon={
+          <label htmlFor={DRAWER_ID} className="drawer-button">
+            <Image src={settingsLogo.src} alt="settings button" width={30} height={30} />
+          </label>
+        }
       />
       <div className={styles.containerItem}>
         <CurrentStateDisplay logo={renderData.logo} />
