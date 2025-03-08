@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   appleWebApp: {
     statusBarStyle: "black-translucent",
   },
-  themeColor: colors.black,
   openGraph: {
     title: "My Portfolio",
     description: "This is my portfolio.",
