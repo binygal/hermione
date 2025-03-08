@@ -2,6 +2,7 @@ import { Metadata, Viewport } from "next";
 import React from "react";
 import GAnalytics from "../src/common/analytics/GAnalyticsProvider";
 import colors from "../src/common/colors";
+import { DRAWER_ID } from "../src/common/components/Drawer/DrawerConstants";
 import { ModelsProvider } from "../src/common/model/MainModelContext";
 
 export const metadata: Metadata = {
@@ -43,11 +44,20 @@ export default function Layout(props: React.PropsWithChildren) {
   return (
     <html lang="en">
       <body>
-        <ModelsProvider>
-          <GAnalytics ga_id="G-68HT974F33" />
-          {props.children}
-          <dialog id="modal" className="modal"></dialog>
-        </ModelsProvider>
+        <div className="drawer h-full w-full">
+          <input type="checkbox" id={DRAWER_ID} className="drawer-toggle" />
+          <div className="drawer-content h-full">
+            <ModelsProvider>
+              <GAnalytics ga_id="G-68HT974F33" />
+              {props.children}
+              <dialog id="modal" className="modal"></dialog>
+            </ModelsProvider>
+          </div>
+          <div className="drawer-side">
+            <label htmlFor={DRAWER_ID} className="drawer-overlay"></label>
+            <div id="drawer-content" className="p-4 w-80 bg-base-100 h-full"></div>
+          </div>
+        </div>
       </body>
     </html>
   );
