@@ -7,7 +7,6 @@ import listLogo from "../components/resources/back-arrow.svg";
 import SVGButton from "../components/SVGButton";
 import { Record } from "../data/data.types";
 import RecordEntry from "./RecordEntry";
-import styles from "./RecordsLogContainer.module.css";
 
 export default function RecordsLogContainer() {
   const setCurrentView = useSetCurrentView();
@@ -39,9 +38,9 @@ export default function RecordsLogContainer() {
     );
   }
   return (
-    <div className={styles.container}>
+    <div className="flex flex-col h-full overflow-hidden">
       <Header content="Records log" rightIcon={<SVGButton onClick={() => setCurrentView("main")} svg={listLogo} />} />
-      <div className={styles.entriesContainer}>{recordsToRender}</div>
+      <div className="flex-1 overflow-auto mt-2">{recordsToRender}</div>
       <MainActionButton
         title="Add new"
         onClick={() => {

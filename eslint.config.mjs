@@ -1,7 +1,8 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import tslint from "typescript-eslint";
-import styles from './eslint/style.linting.mjs';
+import { codeConfig } from "./eslint/code.linting.mjs";
+import styles from "./eslint/style.linting.mjs";
 
 const compat = new FlatCompat({
   // import.meta.dirname is available after Node.js v20.11.0
@@ -10,13 +11,11 @@ const compat = new FlatCompat({
 });
 const eslintConfig = [
   ...compat.config({
-    extends: [
-      "eslint:recommended",
-      "next",
-    ],
+    extends: ["eslint:recommended", "next"],
   }),
   ...tslint.configs.recommended,
   styles,
+  codeConfig,
   {
     rules: {
       "@typescript-eslint/no-unused-vars": [

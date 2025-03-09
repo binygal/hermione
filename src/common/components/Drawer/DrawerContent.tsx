@@ -6,7 +6,6 @@ import { DRAWER_CONTENT_ID } from "./DrawerConstants";
 export default function DrawerContent(props: React.PropsWithChildren) {
   const { children } = props;
   const portalTarget = useWaitForElement(DRAWER_CONTENT_ID);
-  console.log("dogs portal content", portalTarget, children);
 
   if (!portalTarget) {
     return null;

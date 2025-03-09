@@ -29,13 +29,9 @@ export default function DateTimePicker(props: DateTimePickerProps) {
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const openPickerRef = useRef<HTMLDivElement>(null);
-  useOnClickOutside(openPickerRef as RefObject<HTMLDivElement>, (e) => {
-    console.log("dogs outside click? really?", e);
-
+  useOnClickOutside(openPickerRef as RefObject<HTMLDivElement>, () => {
     setIsPickerOpen(false);
   });
-
-  console.log("dogs is picker open", isPickerOpen);
 
   return (
     <Popup

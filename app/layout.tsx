@@ -45,7 +45,7 @@ export default function Layout(props: React.PropsWithChildren) {
       <body>
         <div className="drawer h-full w-full">
           <input type="checkbox" id={DRAWER_ID} className="drawer-toggle" />
-          <div className="drawer-content h-full">
+          <div className="drawer-content h-full overflow-hidden">
             <ModelsProvider>
               <GAnalytics ga_id="G-68HT974F33" />
               {props.children}
