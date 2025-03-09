@@ -18,13 +18,13 @@ function validateNumberAndNotify(value: string, min: number, max: number, notify
 export function TimePicker(props: TimePickerProps) {
   const { onTimeChanged, value } = props;
   return (
-    <div>
+    <div className="flex items-center">
       <input
         value={String(value.hours).padStart(2, "0")}
         type="number"
         min="0"
         max="23"
-        className="input inline w-auto"
+        className="input inline flex-1"
         onChange={(e) => {
           validateNumberAndNotify(e.target.value, 0, 23, (newValue) =>
             onTimeChanged({ hours: newValue, minutes: value.minutes })
@@ -37,7 +37,7 @@ export function TimePicker(props: TimePickerProps) {
         type="number"
         min="0"
         max="23"
-        className="input inline w-auto"
+        className="input inline flex-1"
         onChange={(e) => {
           validateNumberAndNotify(e.target.value, 0, 59, (newValue) =>
             onTimeChanged({ hours: value.hours, minutes: newValue })

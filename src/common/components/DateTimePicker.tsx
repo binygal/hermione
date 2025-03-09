@@ -29,10 +29,67 @@ export default function DateTimePicker(props: DateTimePickerProps) {
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const openPickerRef = useRef<HTMLDivElement>(null);
-  useOnClickOutside(openPickerRef as RefObject<HTMLDivElement>, () => setIsPickerOpen(false));
+  useOnClickOutside(openPickerRef as RefObject<HTMLDivElement>, (e) => {
+    console.log("dogs outside click? really?", e);
+
+    setIsPickerOpen(false);
+  });
+
+  console.log("dogs is picker open", isPickerOpen);
 
   return (
-    <div>
+    <Popup
+      ref={openPickerRef}
+      shouldShow={isPickerOpen}
+      content={
+        <>
+          <calendar-date
+            className="cally"
+            onchange={(eve) => {
+              if (!(eve.target instanceof CalendarDate)) {
+                return;
+              }
+              const date = parseISODate(eve.target.value);
+              date.setHours(value?.getHours() || 0);
+              date.setMinutes(value?.getMinutes() || 0);
+              onDateChange(date);
+            }}
+          >
+            <svg
+              aria-label="Previous"
+              className="fill-current size-4"
+              slot="previous"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+            </svg>
+            <svg
+              aria-label="Next"
+              className="fill-current size-4"
+              slot="next"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+            </svg>
+            <calendar-month></calendar-month>
+          </calendar-date>
+          <TimePicker
+            onTimeChanged={(time) => {
+              const clonedDate = new Date(value || Date.now());
+              clonedDate.setHours(time.hours);
+              clonedDate.setMinutes(time.minutes);
+              onDateChange(clonedDate);
+            }}
+            value={{ hours: value?.getHours() ?? 9, minutes: value?.getMinutes() ?? 0 }}
+          />
+          <button className="btn btn-primary w-full m-0" onClick={() => setIsPickerOpen(false)}>
+            Done
+          </button>
+        </>
+      }
+    >
       <button
         className="input input-bordered w-full max-w-xs"
         onClick={() => setIsPickerOpen((state) => !state)}
@@ -40,49 +97,6 @@ export default function DateTimePicker(props: DateTimePickerProps) {
       >
         {value ? dateFormatter(value) : NO_DATE_VALUE}
       </button>
-      <Popup ref={openPickerRef} title="Select a date" shouldShow={isPickerOpen}>
-        <calendar-date
-          className="cally"
-          onchange={(eve) => {
-            if (!(eve.target instanceof CalendarDate)) {
-              return;
-            }
-            const date = parseISODate(eve.target.value);
-            date.setHours(value?.getHours() || 0);
-            date.setMinutes(value?.getMinutes() || 0);
-            onDateChange(date);
-          }}
-        >
-          <svg
-            aria-label="Previous"
-            className="fill-current size-4"
-            slot="previous"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path d="M15.75 19.5 8.25 12l7.5-7.5"></path>
-          </svg>
-          <svg
-            aria-label="Next"
-            className="fill-current size-4"
-            slot="next"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-          </svg>
-          <calendar-month></calendar-month>
-        </calendar-date>
-        <TimePicker
-          onTimeChanged={(time) => {
-            const clonedDate = new Date(value || Date.now());
-            clonedDate.setHours(time.hours);
-            clonedDate.setMinutes(time.minutes);
-            onDateChange(clonedDate);
-          }}
-          value={{ hours: value?.getHours() ?? 9, minutes: value?.getMinutes() ?? 0 }}
-        />
-      </Popup>
-    </div>
+    </Popup>
   );
 }
