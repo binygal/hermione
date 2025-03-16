@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
 import { ChangeEvent, FocusEvent, useCallback, useEffect, useState } from "react";
 import useNotify from "../common/app/useNotify";
-import useSetCurrentView from "../common/app/useSetCurrentView";
 import { DRAWER_ID } from "../common/components/Drawer/DrawerConstants";
+import { useDrawer } from "../common/components/Drawer/DrawerContext";
 import useSettingsModel from "../common/model/useSettingsModel";
 import Header from "../components/Header";
 import MainActionButton from "../components/MainActionButton";
@@ -11,9 +14,9 @@ import { SettingsObject } from "../data/data.types";
 import styles from "./SettingsContainer.module.css";
 
 export default function SettingsContainer() {
-  const setCurrentView = useSetCurrentView();
   const notify = useNotify();
   const settingsModel = useSettingsModel();
+  const { closeDrawer } = useDrawer();
 
   const [settingsOnEdit, setSettingsOnEdit] = useState<SettingsObject>({
     firstDayOfMonth: 1,
@@ -114,9 +117,9 @@ export default function SettingsContainer() {
           onBlur={onNumberOfHoursLostFocus}
           step=".01"
         />
-        <button type="button" onClick={() => setCurrentView("vacation-picker")}>
+        <Link className="btn btn-primary" type="button" href="/vacation-picker" onClick={closeDrawer}>
           Set vacation days
-        </button>
+        </Link>
       </div>
       <MainActionButton title="Save settings" onClick={saveSettings} />
     </div>

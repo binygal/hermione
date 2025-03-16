@@ -1,19 +1,20 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { v4 } from "uuid";
-import useSetCurrentView from "../common/app/useSetCurrentView";
 import { convertDateToDateString } from "../common/extensions/date";
 import useVacationsModel from "../common/model/useVacationsModel";
 import Header from "../components/Header";
-import SVGButton from "../components/SVGButton";
 import closeLogo from "../components/resources/close-circle.svg";
 import styles from "./VacationPickerEditor.module.css";
 import { StringifiedVacation } from "./VacationsModel";
 
 export default function VacationPickerEditor() {
   const vacationsModel = useVacationsModel();
-  const setCurrentView = useSetCurrentView();
   const [vacationDates, setVacationDates] = useState<StringifiedVacation[]>([]);
 
   const loadAll = useCallback(async () => {
@@ -46,7 +47,11 @@ export default function VacationPickerEditor() {
     <div>
       <Header
         content="Vacation picker"
-        rightIcon={<SVGButton onClick={() => setCurrentView("settings")} svg={closeLogo} />}
+        rightIcon={
+          <Link href="/">
+            <Image src={closeLogo.src} alt="image button" width={30} height={30} />
+          </Link>
+        }
       />
       <Calendar
         value={undefined}
