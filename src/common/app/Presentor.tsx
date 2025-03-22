@@ -6,7 +6,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RecordsLogContainer from "../../records-log/RecordsLogContainer";
 import TimeTrackerContainer from "../../time-tracker/TimeTrackerContainer";
-import VacationPickerEditor from "../../vacation-picker/VacationPickerEditor";
 import PresentorContext, { ViewNames } from "./PresentorContext";
 
 const RecordEditorContainer = dynamic(() => import("../../record-editor/RecordEditorContainer"));
@@ -21,9 +20,6 @@ function getViewFromName(viewName: ViewNames): React.ElementType | undefined {
     }
     case "record-editor": {
       return RecordEditorContainer;
-    }
-    case "vacation-picker": {
-      return VacationPickerEditor;
     }
     default: {
       return undefined;

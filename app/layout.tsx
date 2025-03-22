@@ -4,6 +4,7 @@ import GAnalytics from "../src/common/analytics/GAnalyticsProvider";
 import colors from "../src/common/colors";
 import { DRAWER_ID } from "../src/common/components/Drawer/DrawerConstants";
 import { ModelsProvider } from "../src/common/model/MainModelContext";
+import "../styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Time tracker",

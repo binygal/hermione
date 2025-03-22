@@ -1,46 +1,43 @@
 "use client";
 
+import "cally";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { v4 } from "uuid";
-import { convertDateToDateString } from "../common/extensions/date";
 import useVacationsModel from "../common/model/useVacationsModel";
 import Header from "../components/Header";
 import closeLogo from "../components/resources/close-circle.svg";
-import styles from "./VacationPickerEditor.module.css";
-import { StringifiedVacation } from "./VacationsModel";
+import { Vacation } from "../data/data.types";
+import MultiDatesPicker from "./MultiDatesPicker";
 
 export default function VacationPickerEditor() {
   const vacationsModel = useVacationsModel();
-  const [vacationDates, setVacationDates] = useState<StringifiedVacation[]>([]);
+  const [vacations, setVacations] = useState<Vacation[]>([]);
 
   const loadAll = useCallback(async () => {
-    const vacations = await vacationsModel.getAll();
-    setVacationDates(vacations);
+    const vacations = await vacationsModel.getVacationDates();
+    setVacations(vacations);
   }, [vacationsModel]);
 
   useEffect(() => {
     loadAll();
   }, [loadAll]);
 
-  const saveVacation = useCallback(
-    async (date: Date) => {
-      const vacationDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-      const currentVacation = vacationDates.find((v) => v.vacation === convertDateToDateString(date));
-      if (currentVacation) {
-        await vacationsModel.remove(currentVacation.id);
-      } else {
-        await vacationsModel.add({
-          id: v4(),
-          vacationDate,
-        });
-      }
+  const saveDates = useCallback(
+    async (updatedDates: Date[]) => {
+      const newDates = updatedDates.filter((date) => !vacations.some((v) => v.vacationDate === date.getTime()));
+      const addDateTasks = newDates.map((date) =>
+        vacationsModel.add({ id: v4(), vacationDate: Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) })
+      );
+      const removedDates = vacations.filter((v) => !updatedDates.some((date) => v.vacationDate === date.getTime()));
+
+      const removeDateTasks = removedDates.map((v) => vacationsModel.remove(v.id));
+      await Promise.all([...addDateTasks, ...removeDateTasks]);
       loadAll();
     },
-    [loadAll, vacationDates, vacationsModel]
+    [vacations, loadAll, vacationsModel]
   );
 
   return (
@@ -53,13 +50,7 @@ export default function VacationPickerEditor() {
           </Link>
         }
       />
-      <Calendar
-        value={undefined}
-        onClickDay={saveVacation}
-        tileClassName={(d) =>
-          vacationDates.some((vacation) => vacation.vacation === convertDateToDateString(d.date)) ? styles.vacation : ""
-        }
-      />
+      <MultiDatesPicker selectedDates={vacations.map((v) => new Date(v.vacationDate))} onDatesChange={saveDates} />
     </div>
   );
 }

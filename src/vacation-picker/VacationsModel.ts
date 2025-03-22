@@ -1,16 +1,10 @@
-import { convertDateToDateString } from '../common/extensions/date';
-import { Vacation } from '../data/data.types';
-import { IVacationsRepository } from './VacationsRepository';
-
-export type StringifiedVacation = {
-  id: string;
-  vacation: string;
-};
+import { Vacation } from "../data/data.types";
+import { IVacationsRepository } from "./VacationsRepository";
 
 export interface IVacationsModel {
-  add(vacation: Vacation): Promise<void>
-  remove(id: string): Promise<void>
-  getAll(): Promise<StringifiedVacation[]>
+  add(vacation: Vacation): Promise<void>;
+  remove(id: string): Promise<void>;
+  getVacationDates(): Promise<Vacation[]>;
 }
 
 export default class VacationsModel implements IVacationsModel {
@@ -28,10 +22,8 @@ export default class VacationsModel implements IVacationsModel {
     return this.repository.remove(id);
   }
 
-  async getAll(): Promise<StringifiedVacation[]> {
+  async getVacationDates(): Promise<Vacation[]> {
     const vacations = await this.repository.getAll();
-    const stringifiedVacations = vacations
-      .map((v) => ({ id: v.id, vacation: convertDateToDateString(new Date(v.vacationDate)) }));
-    return stringifiedVacations;
+    return vacations;
   }
 }
