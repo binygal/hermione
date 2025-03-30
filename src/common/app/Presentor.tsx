@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import React, { useMemo, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import RecordsLogContainer from "../../records-log/RecordsLogContainer";
+import RecordsLogDataFetcher from "../../records-log/RecordsLogDataFetcher";
 import TimeTrackerContainer from "../../time-tracker/TimeTrackerContainer";
 import PresentorContext, { ViewNames } from "./PresentorContext";
 
@@ -16,7 +16,7 @@ function getViewFromName(viewName: ViewNames): React.ElementType | undefined {
       return TimeTrackerContainer;
     }
     case "logs-container": {
-      return RecordsLogContainer;
+      return RecordsLogDataFetcher;
     }
     case "record-editor": {
       return RecordEditorContainer;

@@ -3,6 +3,7 @@ import React from "react";
 import GAnalytics from "../src/common/analytics/GAnalyticsProvider";
 import colors from "../src/common/colors";
 import { DRAWER_ID } from "../src/common/components/Drawer/DrawerConstants";
+import QueryProvider from "../src/common/data/QueryProvider";
 import { ModelsProvider } from "../src/common/model/MainModelContext";
 import "../styles/globals.css";
 
@@ -48,9 +49,11 @@ export default function Layout(props: React.PropsWithChildren) {
           <input type="checkbox" id={DRAWER_ID} className="drawer-toggle" />
           <div className="drawer-content h-full overflow-hidden">
             <ModelsProvider>
-              <GAnalytics ga_id="G-68HT974F33" />
-              {props.children}
-              <dialog id="modal" className="modal"></dialog>
+              <QueryProvider>
+                <GAnalytics ga_id="G-68HT974F33" />
+                {props.children}
+                <dialog id="modal" className="modal"></dialog>
+              </QueryProvider>
             </ModelsProvider>
           </div>
           <div className="drawer-side">
